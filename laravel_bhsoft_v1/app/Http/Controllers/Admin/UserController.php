@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 class UserController extends Controller
 {
     private object $model;
@@ -104,6 +105,7 @@ class UserController extends Controller
             }
         }
         if(isset($arr['logo_new'])){
+            Storage::deleteDirectory("public/$user");
             $path = Storage::disk('public')->putFile($user, $request->file('logo_new'));
             $arrUpdate['logo'] = $path;
         }
@@ -130,16 +132,9 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success','Thêm thành công');
     }
     public function destroy($userId){
-//        $each = $this->model
-//            ->select([
-//                'email'
-//            ])
-//            ->where('id', $userId)
-//            ->first();
-//        $email = $each->email;
-////        File::makeDirectory($email, 0711, true, true);
-//        Storage::deleteDirectory($email,0711, true, true);
-////        Storage::disk('public')->delete($email);
+//        Storage::deleteDirectory($id,0711, true, true);
+        Storage::deleteDirectory("public/$userId");
+//        File::deleteDirectory(public_path($userId));
         User::destroy($userId);
         return redirect()->back()->with('success','Xóa thành công');
     }
