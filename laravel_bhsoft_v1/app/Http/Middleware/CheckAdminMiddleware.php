@@ -16,9 +16,13 @@ class CheckAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(session()->get('role') === '0'){
-            return redirect()->route('login');
+//        dd(auth()->user()->role);
+        if(auth()->check()){
+            if(auth()->user()->role === 1){
+                return redirect()->route('login');
+            }
         }
+
         return $next($request);
     }
 }

@@ -19,7 +19,7 @@
                         <p class="text-muted mb-2 font-13"><strong>Start date :</strong>
                             <span class="ml-2">{{ $course->start_date }}</span></p>
 
-                        <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span
+                        <p class="text-muted mb-2 font-13"><strong>End date :</strong> <span
                                 class="ml-2 ">{{ $course->end_date }}</span></p>
                     </div>
 
@@ -53,7 +53,7 @@
 
                             <div class="timeline-alt pb-0">
                                 <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
-                                    Course</h5>
+                                    Student</h5>
                                 <div class="table-responsive">
                                     <table class="table table-borderless table-nowrap mb-0">
                                         <thead class="thead-light">

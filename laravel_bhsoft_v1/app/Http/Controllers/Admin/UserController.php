@@ -33,6 +33,7 @@ class UserController extends Controller
                 'phone_number',
                 'logo',
             ])
+            ->where('role',1)
             ->paginate();
 //        return response()->json($data);
         return view("admin.$this->table.index",[

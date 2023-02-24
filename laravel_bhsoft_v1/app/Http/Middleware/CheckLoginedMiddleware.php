@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckLoginMiddleware
+class CheckLoginedMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,14 @@ class CheckLoginMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!auth()->check()){
-            return redirect()->route('login');
+        if(auth()->check()){
+            if(auth()->user()->role === 0){
+                return redirect()->route('admin.users.index');
+            }else if(auth()->user()->role === 1){
+                return redirect()->route('user.index');
+            }
         }
+
         return $next($request);
     }
 }

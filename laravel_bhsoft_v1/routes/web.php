@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckLoginedMiddleware;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +16,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/login',[AuthController::class,'login'])->name('login');
-Route::post('login', [AuthController::class,'processLogin'])->name('process_login');
+Route::group([
+    'middleware' => CheckLoginedMiddleware::class,
+],function (){
+    Route::get('/login',[AuthController::class,'login'])->name('login');
+    Route::post('login', [AuthController::class,'processLogin'])->name('process_login');
+});
+
 Route::group([
     'middleware' => CheckLoginMiddleware::class,
     'as' =>'user.',

@@ -18,7 +18,7 @@ class UserController extends Controller
         View::share('table',$this->table);
     }
     public function index(){
-        $userId = session()->get('id');
+        $userId = auth()->user()->id;
         $user = $this->model
             ->select([
                 'id',

@@ -8,9 +8,10 @@
                         <a href="{{ route('admin.courses.create') }}" class="btn btn-primary">
                             Create
                         </a>
-                        <form>
-                            <label class="btn btn-info ml-2 mb-0" for="ip_csv">Import CSV</label>
-                            <input type="file" name="ip_csv" id="import_csv" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                        <form action="#">
+                            @csrf
+                            <label class="btn btn-info ml-2 mb-0" for="csv">Import CSV</label>
+                            <input type="file" name="csv" id="csv" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         </form>
                         <form action="{{ route('admin.courses.export_csv') }}">
                             <button class="btn btn-info ml-2 mb-0">Export CSV</button>
@@ -74,7 +75,7 @@
             if(localStorage.getItem('data')){
                 localStorage.removeItem('data');
             }
-            $("#import_csv").change(function(event) {
+            $("#csv").change(function(event) {
                 /* Act on the event */
                 var formData = new FormData();
                 formData.append('file', $(this)[0].files[0]);
@@ -98,6 +99,13 @@
                         })
                     },
                     error: function(response) {
+                        $.toast({
+                            heading: 'Import Error',
+                            text: 'Your data have not  been imported',
+                            showHideTransition: 'slide',
+                            position: 'bottom-right',
+                            icon: 'error'
+                        })
                         /* Act on the event */
                     }
                 })
