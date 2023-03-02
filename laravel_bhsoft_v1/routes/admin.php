@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CourseController;
+use App\Http\Controllers\Admin\DashBoardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ Route::group([
     Route::get('/edit/{user}', [UserController::class,'edit'])->name('edit');
     Route::put('/update/{user}', [UserController::class,'update'])->name('update');
     Route::delete('/{user}', [UserController::class,'destroy'])->name('destroy');
-    Route::get('/{user}', [UserController::class,'show'])->name('show');
+    Route::get('/show/{user}', [UserController::class,'show'])->name('show');
 
 });
 Route::group([
@@ -40,9 +41,15 @@ Route::group([
     Route::post('/store',[CourseController::class,'store'])->name('store');
     Route::post('/import-csv', [CourseController::class,'importCsv'])->name('import_csv');
     Route::get('/export-csv', [CourseController::class,'exportCsv'])->name('export_csv');
-    Route::get('/edit/{user}', [CourseController::class,'edit'])->name('edit');
-    Route::put('/update/{user}', [CourseController::class,'update'])->name('update');
-    Route::delete('/destroy/{user}', [CourseController::class,'destroy'])->name('destroy');
-    Route::get('/show/{user}', [CourseController::class,'show'])->name('show');
-
+    Route::get('/edit/{course}', [CourseController::class,'edit'])->name('edit');
+    Route::put('/update/{course}', [CourseController::class,'update'])->name('update');
+    Route::delete('/destroy/{course}', [CourseController::class,'destroy'])->name('destroy');
+    Route::get('/show/{course}', [CourseController::class,'show'])->name('show');
+});
+Route::group([
+    'middleware' => CheckAdminMiddleware::class,
+    'as' => 'dashboard.',
+    'prefix' => 'dashboard',
+],function (){
+    Route::get('/', [DashBoardController::class,'index'])->name('index');
 });

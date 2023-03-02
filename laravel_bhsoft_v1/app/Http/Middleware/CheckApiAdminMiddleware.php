@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckAdminMiddleware
+class CheckApiAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,16 +16,13 @@ class CheckAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-//        dd(auth()->check());
         if(auth()->check()){
             if(auth()->user()->role === 1){
-                return redirect()->route('login');
+                return redirect()->route('not_found');
             }
         }else{
-            return redirect()->route('login');
-
+            return redirect()->route('not_found');
         }
-
         return $next($request);
     }
 }

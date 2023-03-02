@@ -26,24 +26,36 @@ class CourseController extends Controller
         View::share('title',ucwords($this->table));
         View::share('table',$this->table);
     }
+
     public function index(){
-        $data = $this->model
+        return view("admin.$this->table.index");
+    }
+    public function allCourse(Request $request){
+        $q    = $request->get('q');
+        $field    = $request->get('field');
+        $query = $this->model
             ->select([
                 'id',
                 'name',
                 'description',
                 'start_date',
                 'end_date',
-            ])
-            ->paginate();
-        return view("admin.$this->table.index",[
-            'data' => $data
-        ]);
+            ]);
+        if(isset($q) && isset($field)){
+            $query->where("courses.$field",'like','%'.$q.'%');
+        }
+        $data = $query->paginate()
+            ->appends(['q' => $q])
+            ->appends(['field' => $field]);
+        $arr['data']= $data->getCollection();
+        $arr['pagination'] = $data->linkCollection();
+        return $this->successResponse($arr);
     }
-    public function show($request){
-        if(empty($request)){
+    public function getCourse(Request $request){
+        if(empty($request->course)){
             return redirect()->back();
         }
+        $id = $request->course;
         $course = $this->model
             ->select([
                 'id',
@@ -52,16 +64,19 @@ class CourseController extends Controller
                 'start_date',
                 'end_date',
             ])
-            ->where('id',$request)
+            ->where('id',$id)
             ->first();
         $users = SignupCourse::query()
             ->with('users:id,name,email,phone_number')
-            ->where('course',$request)
+            ->where('course',$id)
+            ->where('expire',1)
             ->get();
-        return \view("admin.$this->table.show",[
-            'course'=>$course,
-            'users'=>$users
-        ]);
+        $arr['course'] = $course;
+        $arr['users'] = $users;
+        return $this->successResponse($arr);
+    }
+    public function show($request){
+        return \view("admin.$this->table.show");
     }
     public function edit($request){
         if(empty($request)){

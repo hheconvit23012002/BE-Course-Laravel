@@ -21,7 +21,7 @@
       data-leftbar-theme="dark">
 <!-- Begin page -->
 <div class="wrapper mm-active">
-    @if( auth()->user()->role === 0)
+    @if(  auth()->user()->role === 0)
         @include('layout.sidebar')
     @endif
     <div class="content-page">

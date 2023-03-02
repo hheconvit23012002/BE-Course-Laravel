@@ -27,6 +27,12 @@
                                         <span> Course </span>
                                     </a>
                                 </li>
+                                <li class="side-nav-item">
+                                    <a href="{{ route('admin.dashboard.index') }}" class="side-nav-link">
+                                        <i class="uil-home-alt"></i>
+                                        <span> Dashboard </span>
+                                    </a>
+                                </li>
                             </ul>
                             <div class="clearfix"></div>
 

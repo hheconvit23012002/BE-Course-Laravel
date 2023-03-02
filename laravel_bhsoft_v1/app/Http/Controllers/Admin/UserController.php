@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ResponseTrait;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\Course;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 class UserController extends Controller
 {
+    use ResponseTrait;
     private object $model;
     private string $table;
     public function __construct(){
@@ -24,27 +26,41 @@ class UserController extends Controller
         View::share('table',$this->table);
     }
     public function index(){
-        $data = $this->model
-            ->select([
-                'id',
-                'name',
-                'email',
-                'birthdate',
-                'phone_number',
-                'logo',
-            ])
-            ->where('role',1)
-            ->paginate();
-//        return response()->json($data);
-        return view("admin.$this->table.index",[
-            'data' => $data
-        ]);
+        return view("admin.users.index");
     }
+    public function allUser(Request $request){
+        $q    = $request->get('q');
+        $field    = $request->get('field');
+        $query = $this->model
+            ->addSelect('users.id','users.name','users.email','users.birthdate','users.phone_number','users.logo')
+            ->selectRaw('COUNT(signup_courses.course) as number_courses')
+            ->leftJoin('signup_courses','signup_courses.user','users.id')
+            ->groupBy('users.id')
+            ->where('users.role',1);
 
-    public function show($request){
-        if(empty($request)){
+        if(isset($q) && isset($field)){
+            if($field !== 'number_courses'){
+                $query->where("users.$field",'like','%'.$q.'%');
+            }else{
+                $query->having('number_courses', '=', $q);
+            }
+        }
+        $data = $query
+            ->paginate()
+            ->appends(['q' => $q])
+            ->appends(['field' => $field]);
+
+//        return response()->json($data);
+        $arr['data'] = $data->getCollection();
+
+        $arr['pagination'] = $data->linkCollection();
+        return $this->successResponse($arr);
+    }
+    public function getUser(Request $request){
+        if(empty($request->user)){
             return redirect()->back();
         }
+        $id = $request->user;
         $user = $this->model
             ->select([
                 'id',
@@ -54,16 +70,19 @@ class UserController extends Controller
                 'phone_number',
                 'logo',
             ])
-            ->where('id',$request)
+            ->where('id',$id)
             ->first();
         $courses = SignupCourse::query()
             ->with('courses:id,name,start_date,end_date')
-            ->where('user',$request)
+            ->where('user',$id)
+            ->where('expire',1)
             ->get();
-        return \view("admin.users.show",[
-           'user'=>$user,
-            'courses'=>$courses
-        ]);
+        $arr['user'] = $user;
+        $arr['course'] = $courses;
+        return $this->successResponse($arr);
+    }
+    public function show(){
+        return view("admin.users.show");
     }
     public function edit($request){
         if(empty($request)){
@@ -83,6 +102,7 @@ class UserController extends Controller
         $courses = SignupCourse::query()
             ->with('courses:id,name,start_date,end_date')
             ->where('user',$request)
+            ->where('expire',1)
             ->get();
         return \view("admin.users.edit",[
             'user'=>$user,

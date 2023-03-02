@@ -42,7 +42,6 @@
                             <input class="form-control" type="date" name="birthdate" value="{{ !old('birthdate') ? $user->birthdate : old('birthdate') }}">
                         </div>
                         <div class="form-group">
-
                             <label for="phone_number">Phone Number</label>
                             @if($errors->any('phone_number'))
                                 <span class="error">
@@ -51,7 +50,6 @@
                             @endif
                             <input class="form-control" type="text" name="phone_number" value="{{ !old('phone_number') ? $user->phone_number : old('phone_number')}}">
                         </div>
-
                         <div class="form-group">
                             <label for="logo">Avatar</label>
                             @if($errors->any('logo_new'))
@@ -71,16 +69,13 @@
                                 {{ $errors->first('course') }}
                             </span>
                             @endif
-
                             <select class="form-control" name="course[]" id="select-course" multiple="multiple">
                                 @foreach($courses as $each)
-{{--                                    {{ $each->courses->id }}--}}
                                     <option value="{{ $each->courses->id }}" selected="selected">
                                         {{ $each->courses->name }}
                                     </option>
                                 @endforeach
                             </select>
-{{--                            <input type="hidden" id="item_title" name ="item_title" value="{{ old('item_title') }}" />--}}
                         </div>
                         <button class="btn btn-primary">submit</button>
                     </form>
@@ -98,13 +93,14 @@
             $('#select-course').select2({
                 ajax: {
                     delay: 250,
-                    url: '{{ route('api.courses') }}',
+                    url: '{{ route('api.coursesSelect2') }}',
                     data: function (params) {
                         return {
                             q: params.term
                         };
                     },
                     processResults: function (data) {
+                        console.log(data);
                         return {
                             results: $.map(data.data, function (item) {
                                 return {

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 
 class UserController extends Controller
 {
+    use ResponseTrait;
     private object $model;
     private string $table;
     public function __construct(){
@@ -18,6 +19,9 @@ class UserController extends Controller
         View::share('table',$this->table);
     }
     public function index(){
+        return view("user.index");
+    }
+    public function user(){
         $userId = auth()->user()->id;
         $user = $this->model
             ->select([
@@ -33,10 +37,10 @@ class UserController extends Controller
         $courses = SignupCourse::query()
             ->with('courses:id,name,start_date,end_date')
             ->where('user',$userId)
+            ->where('expire',1)
             ->get();
-        return \view("user.index",[
-            'user'=>$user,
-            'courses'=>$courses
-        ]);
+        $arr['user'] = $user;
+        $arr['courses'] = $courses;
+        return $this->successResponse($arr);
     }
 }

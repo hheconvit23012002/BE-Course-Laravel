@@ -95,7 +95,7 @@
             $('#select-course').select2({
               ajax: {
                   delay: 250,
-                  url: '{{ route('api.courses') }}',
+                  url: '{{ route('api.coursesSelect2') }}',
                   data: function (params) {
                       return {
                         q: params.term
