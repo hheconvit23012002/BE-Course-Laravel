@@ -112,25 +112,18 @@ class UserController extends Controller
     public function create(){
         return view("admin.$this->table.create");
     }
-    public function update(UpdateRequest $request,$user){
-        $arrUpdate           = $request->except('_token','_method','logo_new','logo_old');
+    public function update(UpdateRequest $request,$userID){
+        $arrUpdate           = $request->except('_token','_method','logo_new','logo_old','course');
         $arr = $request->validated();
-        SignupCourse::query()->where('user',$user)->delete();
-        if(isset($arr['course'])){
-            $courseNew = $arr['course'];
-            foreach ($courseNew as $course){
-                $arrCourse = [];
-                $arrCourse['user'] = $user;
-                $arrCourse['course'] = $course;
-                SignupCourse::create($arrCourse);
-            }
-        }
+        $courseNew = $arr['course'];
+        $user = User::find($userID);
+        $user->courses()->sync($courseNew);
         if(isset($arr['logo_new'])){
             Storage::deleteDirectory("public/$user");
             $path = Storage::disk('public')->putFile($user, $request->file('logo_new'));
             $arrUpdate['logo'] = $path;
         }
-        $this->model->where('id',$user)->first()->update($arrUpdate);
+        $this->model->where('id',$userID)->update($arrUpdate);
         return redirect()->route('admin.users.index')->with('success','Thay đổi thành công');
     }
     public function store(StoreRequest $request){

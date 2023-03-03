@@ -15,6 +15,7 @@
                                 <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Rank</th>
                                     <th>Name</th>
                                     <th>Number Course</th>
                                 </tr>
@@ -81,6 +82,7 @@
                         id = id.replace('valueId', value.id);
                         $('#table-top-user').append($('<tr>')
                             .append($('<td>').append(id))
+                            .append($('<td>').append(value.rank))
                             .append($('<td>').append(value.name))
                             .append($('<td>').append(value.number_courses))
                         )

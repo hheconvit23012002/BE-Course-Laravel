@@ -14,7 +14,10 @@ class User extends Model implements AuthenticatableContract
     use Authenticatable;
     use HasFactory;
     use Notifiable;
-
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'signup_courses','user','course');
+    }
     protected $fillable = [
         'name',
         'email',

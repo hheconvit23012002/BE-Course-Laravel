@@ -20,11 +20,19 @@ class DashBoardController extends Controller
             ->get();
         $users = User::query()->selectRaw('count(id) as total')
             ->get();
-        $courses_signup = SignupCourse::query()
-            ->selectRaw('count(user) as total')
-            ->groupBy('course')
-            ->having('total','>',0)
-            ->count('*');
+//        $courses_signup = SignupCourse::query()
+//            ->selectRaw('COUNT(user) as total')
+//            ->groupBy('course')
+//            ->having('total','>',0)
+//            ->count('*');
+
+        $courses_signup = Course::query()
+            ->whereExists(function ($query){
+                $query->select(Course::raw(1))
+                    ->from('signup_courses')
+                    ->whereRaw('courses.id = signup_courses.course');
+            })
+            ->count();
         $topFiveUserSignuped = User::query()
             ->addSelect('users.id','users.name')
             ->selectRaw('COUNT(signup_courses.course) as number_courses')
@@ -34,6 +42,15 @@ class DashBoardController extends Controller
             ->where('users.role',1)
             ->limit(5)
             ->get();
+        $rank =1;
+        $prev_score = null;
+        foreach ($topFiveUserSignuped as $user){
+            if ($prev_score !== null && $user->number_courses !== $prev_score) {
+                $rank++;
+            }
+            $user->rank = $rank;
+            $prev_score = $user->number_courses;
+        }
         $data['courses'] = $courses;
         $data['users'] = $users;
         $data['courses_signup'] = $courses_signup;
