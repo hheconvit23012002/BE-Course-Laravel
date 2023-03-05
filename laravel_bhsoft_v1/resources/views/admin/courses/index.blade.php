@@ -19,7 +19,8 @@
                         <form action="#">
                             @csrf
                             <label class="btn btn-info ml-2 mb-0" for="csv">Import CSV</label>
-                            <input type="file" name="csv" id="csv" class="d-none" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                            <input type="file" name="csv" id="csv" class="d-none"
+                                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         </form>
                         <form action="{{ route('admin.courses.export_csv') }}">
                             <button class="btn btn-info ml-2 mb-0">Export CSV</button>
@@ -48,7 +49,7 @@
 @endsection
 @push('js')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let urlParams = new URLSearchParams(window.location.search)
             $('#ip-search').val(urlParams.get('q') || '')
             $("#ip-field").val(urlParams.get('field') || 'name').change();
@@ -60,14 +61,14 @@
                     q: urlParams.has('q') ? urlParams.get('q') : '',
                     field: urlParams.has('field') ? urlParams.get('field') : 'name',
                 },
-                success :function(response){
-                    response.data.data.forEach(function(value,index){
-                        let id = '<a href="' + "{{ route('admin.courses.show', ['course' => 'valueId']) }}" + '">'+`${value.id}`+'</a>';
+                success: function (response) {
+                    response.data.data.forEach(function (value, index) {
+                        let id = '<a href="' + "{{ route('admin.courses.show', ['course' => 'valueId']) }}" + '">' + `${value.id}` + '</a>';
                         id = id.replace('valueId', value.id);
                         let name = `${value.name}`
                         let edit = '<a class="btn btn-success" href="' + "{{ route('admin.courses.edit', ['course' => 'valueId']) }}" + '">edit</a>';
                         edit = edit.replace('valueId', value.id);
-                        let destroy ='<form action="' + "{{ route("admin.$table.destroy",['course' => 'valueId']) }}" + '" method="POST">'
+                        let destroy = '<form action="' + "{{ route("admin.$table.destroy",['course' => 'valueId']) }}" + '" method="POST">'
                             + '@csrf'
                             + '@method('DELETE')'
                             + '<button class="btn btn-danger">delete</button>'
@@ -85,7 +86,7 @@
                     })
                     renderPagination(response.data.pagination)
                 },
-                error: function(response) {
+                error: function (response) {
                     /* Act on the event */
                     $.toast({
                         heading: 'Import Error',
@@ -96,10 +97,10 @@
                     })
                 },
             })
-            if(localStorage.getItem('data')){
+            if (localStorage.getItem('data')) {
                 localStorage.removeItem('data');
             }
-            $("#csv").change(function(event) {
+            $("#csv").change(function (event) {
                 /* Act on the event */
                 var formData = new FormData();
                 formData.append('file', $(this)[0].files[0]);
@@ -113,7 +114,7 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-                    success: function(response){
+                    success: function (response) {
                         $.toast({
                             heading: 'Import Success',
                             text: 'Your data have been imported',
@@ -122,7 +123,7 @@
                             icon: 'success'
                         })
                     },
-                    error: function(response) {
+                    error: function (response) {
                         $.toast({
                             heading: 'Import Error',
                             text: 'Your data have not  been imported',
@@ -134,18 +135,18 @@
                     }
                 })
             });
-            $(document).on('click','#paginate > li > a',function (e){
+            $(document).on('click', '#paginate > li > a', function (e) {
                 e.preventDefault();
                 let page = $(this).attr('href').split('page=')[1];
-                urlParams.set('page',page)
+                urlParams.set('page', page)
                 window.location.search = urlParams
             })
             $(document).on('submit', '#form-search', function (e) {
                 e.preventDefault();
                 let q = $('#ip-search').val();
                 let field = $('#ip-field').val();
-                urlParams.set('q',q)
-                urlParams.set('field',field)
+                urlParams.set('q', q)
+                urlParams.set('field', field)
                 window.location.search = urlParams
             });
         })

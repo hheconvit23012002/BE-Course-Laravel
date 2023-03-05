@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Register - Sign Up | Hyper - Responsive Bootstrap 4 Admin Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-    <meta content="Coderthemes" name="author" />
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description"/>
+    <meta content="Coderthemes" name="author"/>
     <!-- App favicon -->
 
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css">
@@ -14,7 +13,7 @@
     <link href="{{ asset('css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css">
 
     <style>
-        .error{
+        .error {
             color: red;
         }
     </style>
@@ -41,7 +40,8 @@
                                         {{ $errors->first('name') }}
                                     </span>
                                 @endif
-                                <input class="form-control" type="text" name="name" value="{{ old('name') }}" id="fullname" placeholder="Enter your name" required>
+                                <input class="form-control" type="text" name="name" value="{{ old('name') }}"
+                                       id="fullname" placeholder="Enter your name" required>
                             </div>
                             <div class="form-group">
                                 <label for="emailaddress">Email address</label>
@@ -50,7 +50,8 @@
                                         {{ $errors->first('email') }}
                                     </span>
                                 @endif
-                                <input class="form-control" name="email" type="email" value="{{ old('email') }}" id="emailaddress" required placeholder="Enter your email">
+                                <input class="form-control" name="email" type="email" value="{{ old('email') }}"
+                                       id="emailaddress" required placeholder="Enter your email">
                             </div>
 
                             <div class="form-group">
@@ -61,7 +62,8 @@
                                     </span>
                                 @endif
                                 <div class="input-group input-group-merge">
-                                    <input type="password" name="password" id="password" value="{{ old('password') }}" class="form-control" placeholder="Enter your password">
+                                    <input type="password" name="password" id="password" value="{{ old('password') }}"
+                                           class="form-control" placeholder="Enter your password">
                                     <div class="input-group-append" data-password="false">
                                         <div class="input-group-text">
                                             <span class="password-eye"></span>
@@ -70,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="form-group mb-0 text-center">
-                                <button class="btn btn-primary"> Sign Up </button>
+                                <button class="btn btn-primary"> Sign Up</button>
                             </div>
 
                         </form>
@@ -80,7 +82,8 @@
 
                 <div class="row mt-3">
                     <div class="col-12 text-center">
-                        <p class="text-muted">Already have account? <a href="{{ route('login') }}" class="text-muted ml-1"><b>Log In</b></a></p>
+                        <p class="text-muted">Already have account? <a href="{{ route('login') }}"
+                                                                       class="text-muted ml-1"><b>Log In</b></a></p>
                     </div> <!-- end col-->
                 </div>
                 <!-- end row -->

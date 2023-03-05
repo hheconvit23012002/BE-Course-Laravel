@@ -22,27 +22,27 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::get('/coursesSelect2',[CourseController::class,'index'])->name('coursesSelect2');
+Route::get('/coursesSelect2', [CourseController::class, 'index'])->name('coursesSelect2');
 Route::group([
     'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'users.',
     'prefix' => 'users'
-],function (){
-    Route::get('/',[UserController::class,'allUser'])->name('all_users');
-    Route::post('/user',[UserController::class,'getUser'])->name('get_user');
+], function () {
+    Route::get('/', [UserController::class, 'allUser'])->name('all_users');
+    Route::post('/user', [UserController::class, 'getUser'])->name('get_user');
 });
 Route::group([
     'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'courses.',
     'prefix' => 'courses'
-],function (){
-    Route::get('/',[CourseControllerAlias::class,'allCourse'])->name('all_courses');
-    Route::post('/course',[CourseControllerAlias::class,'getCourse'])->name('get_course');
+], function () {
+    Route::get('/', [CourseControllerAlias::class, 'allCourse'])->name('all_courses');
+    Route::post('/course', [CourseControllerAlias::class, 'getCourse'])->name('get_course');
 });
 Route::group([
     'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'dashboard',
     'prefix' => 'dashboard'
-],function (){
-    Route::get('/',[DashBoardController::class,'apiDashboard']);
+], function () {
+    Route::get('/', [DashBoardController::class, 'apiDashboard']);
 });

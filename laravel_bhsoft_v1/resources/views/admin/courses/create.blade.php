@@ -1,8 +1,8 @@
 @extends('layout.master')
 @push('css')
     <style>
-        .error{
-            color:red
+        .error {
+            color: red
         }
     </style>
 @endpush
@@ -11,7 +11,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('admin.courses.store') }}" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="{{ route('admin.courses.store') }}" method="post"
+                          enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -29,7 +30,8 @@
                                 {{ $errors->first('description') }}
                             </span>
                             @endif
-                            <textarea class="form-control" name="description" rows="12">{{ old('description') }}</textarea>
+                            <textarea class="form-control" name="description"
+                                      rows="12">{{ old('description') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="start_date">Start date</label>

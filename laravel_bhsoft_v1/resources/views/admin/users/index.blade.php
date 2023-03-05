@@ -11,7 +11,8 @@
                             <option value="email">Email</option>
                             <option value="birthdate">Birthdate</option>
                             <option value="phone_number">PhoneNumber</option>
-                            <option value="number_courses">NumberCourse</option>/
+                            <option value="number_courses">NumberCourse</option>
+                            /
                         </select>
                         <button class="btn btn-success" type="submit">Search</button>
                     </form>
@@ -20,15 +21,15 @@
                             Create
                         </a>
                         <thead>
-                            <tr>
-                                <td>#</td>
-                                <td>logo</td>
-                                <td>info</td>
-                                <td>birthdate</td>
-                                <td>sum course</td>
-                                <td>edit</td>
-                                <td>delete</td>
-                            </tr>
+                        <tr>
+                            <td>#</td>
+                            <td>logo</td>
+                            <td>info</td>
+                            <td>birthdate</td>
+                            <td>sum course</td>
+                            <td>edit</td>
+                            <td>delete</td>
+                        </tr>
                         </thead>
                         <tbody>
                         </tbody>
@@ -44,8 +45,8 @@
 @endsection
 @push('js')
     <script>
-        $(document).ready(function() {
-            function getData(){
+        $(document).ready(function () {
+            function getData() {
                 const urlParams = new URLSearchParams(window.location.search);
                 $('#ip-search').val(urlParams.get('q') || '')
                 $("#ip-field").val(urlParams.get('field') || 'name').change();
@@ -57,9 +58,9 @@
                         q: urlParams.has('q') ? urlParams.get('q') : '',
                         field: urlParams.has('field') ? urlParams.get('field') : 'name',
                     },
-                    success :function(response){
-                        response.data.data.forEach(function(value,index){
-                            let id = '<a href="' + "{{ route('admin.users.show', ['user' => 'valueId']) }}" + '">'+`${value.id}`+'</a>';
+                    success: function (response) {
+                        response.data.data.forEach(function (value, index) {
+                            let id = '<a href="' + "{{ route('admin.users.show', ['user' => 'valueId']) }}" + '">' + `${value.id}` + '</a>';
                             id = id.replace('valueId', value.id);
                             let logo = `<img src="{{ public_path()."/" }}${value.logo}" height="100">`
                             let info = `${value.name}
@@ -69,11 +70,11 @@
                                     <a href="tel:${value.phone_number}">${value.phone_number}</a>`
                             let edit = '<a class="btn btn-success" href="' + "{{ route('admin.users.edit', ['user' => 'valueId']) }}" + '">edit</a>';
                             edit = edit.replace('valueId', value.id);
-                            let destroy ='<form action="' + "{{ route("admin.$table.destroy",['user' => 'valueId']) }}" + '" method="POST">'
-                                            + '@csrf'
-                                            + '@method('DELETE')'
-                                            + '<button class="btn btn-danger">delete</button>'
-                                        + '</form>'
+                            let destroy = '<form action="' + "{{ route("admin.$table.destroy",['user' => 'valueId']) }}" + '" method="POST">'
+                                + '@csrf'
+                                + '@method('DELETE')'
+                                + '<button class="btn btn-danger">delete</button>'
+                                + '</form>'
                             destroy = destroy.replace('valueId', value.id);
 
                             $('#table-data').append($('<tr>')
@@ -88,7 +89,7 @@
                         })
                         renderPagination(response.data.pagination)
                     },
-                    error: function(response) {
+                    error: function (response) {
                         /* Act on the event */
                         $.toast({
                             heading: 'Import Error',
@@ -100,12 +101,13 @@
                     },
                 })
             }
+
             getData();
-            $(document).on('click','#paginate > li > a',function (e){
+            $(document).on('click', '#paginate > li > a', function (e) {
                 e.preventDefault();
                 let page = $(this).attr('href').split('page=')[1];
                 let urlParams = new URLSearchParams(window.location.search)
-                urlParams.set('page',page)
+                urlParams.set('page', page)
                 window.location.search = urlParams
             })
             $(document).on('submit', '#form-search', function (e) {
@@ -113,11 +115,11 @@
                 let q = $('#ip-search').val();
                 let field = $('#ip-field').val();
                 let urlParams = new URLSearchParams(window.location.search)
-                urlParams.set('q',q)
-                urlParams.set('field',field)
+                urlParams.set('q', q)
+                urlParams.set('field', field)
                 window.location.search = urlParams
             });
-            if(localStorage.getItem('data')){
+            if (localStorage.getItem('data')) {
                 localStorage.removeItem('data');
             }
         })

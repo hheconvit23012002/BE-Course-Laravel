@@ -5,11 +5,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12"  id="dashboard-total">
+                        <div class="col-xl-12 col-lg-12" id="dashboard-total">
                         </div> <!-- end col -->
 
                     </div>
-                    <div class="row" >
+                    <div class="row">
                         <div class="table-responsive">
                             <table class="table table-borderless table-nowrap mb-0" id="table-top-user">
                                 <thead class="thead-light">
@@ -32,12 +32,12 @@
 @endsection
 @push('js')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $.ajax({
                 url: '{{ route("api.dashboard") }}',
                 type: 'get',
                 dataType: 'json',
-                success: function(response){
+                success: function (response) {
                     let html = `
                             <div class="row">
                                 <div class="col-lg-12">
@@ -78,7 +78,7 @@
                             `
                     $('#dashboard-total').html(html)
                     response.data.top_user.forEach(function (value, index) {
-                        let id = '<a href="' + "{{ route('admin.users.show', ['user' => 'valueId']) }}" + '">'+`${value.id}`+'</a>';
+                        let id = '<a href="' + "{{ route('admin.users.show', ['user' => 'valueId']) }}" + '">' + `${value.id}` + '</a>';
                         id = id.replace('valueId', value.id);
                         $('#table-top-user').append($('<tr>')
                             .append($('<td>').append(id))

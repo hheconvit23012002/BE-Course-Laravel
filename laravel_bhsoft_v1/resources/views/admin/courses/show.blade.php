@@ -7,37 +7,37 @@
                 </div> <!-- end card-body -->
             </div> <!-- end card -->
         </div> <!-- end col-->
+    </div>
+    <div class="col-xl-8 col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="aboutme">
 
-        <div class="col-xl-8 col-lg-7">
-            <div class="card">
-                <div class="card-body">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="aboutme">
-
-                            <div class="timeline-alt pb-0">
-                                <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
-                                    Student</h5>
-                                <div class="table-responsive">
-                                    <table class="table table-borderless table-nowrap mb-0" id="table-user">
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone Number</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="timeline-alt pb-0">
+                            <h5 class="mb-3 mt-4 text-uppercase"><i class="mdi mdi-cards-variant mr-1"></i>
+                                Student</h5>
+                            <div class="table-responsive">
+                                <table class="table table-borderless table-nowrap mb-0" id="table-user">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone Number</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div> <!-- end tab-content -->
-                    </div> <!-- end card body -->
-                </div> <!-- end card -->
-            </div> <!-- end col -->
-        </div>
-        <!-- end row-->
+                        </div>
+                    </div> <!-- end tab-content -->
+                </div> <!-- end card body -->
+            </div> <!-- end card -->
+        </div> <!-- end col -->
+    </div>
+    <!-- end row-->
 @endsection
 @push('js')
     <script>
@@ -95,6 +95,7 @@
                     },
                 })
             }
+
             getData()
         })
     </script>

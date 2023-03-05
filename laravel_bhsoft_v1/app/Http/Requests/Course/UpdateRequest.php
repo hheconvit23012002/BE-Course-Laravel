@@ -24,22 +24,22 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> [
+            'name' => [
                 'required',
                 'string',
                 'filled',
             ],
-            'description'=> [
+            'description' => [
                 'nullable',
                 'string',
                 'max:2048'
             ],
-            'start_date'=>[
+            'start_date' => [
                 'required',
                 'before_or_equal:end_date',
                 'date',
             ],
-            'end_date'=>[
+            'end_date' => [
                 'required',
                 'after_or_equal:start_date',
                 'date',

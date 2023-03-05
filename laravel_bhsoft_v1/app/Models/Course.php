@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
+
     public function users()
     {
-        return $this->belongsToMany(User::class, 'signup_courses','course','user');
+        return $this->belongsToMany(User::class, 'signup_courses', 'course', 'user');
     }
 
     protected $fillable = [

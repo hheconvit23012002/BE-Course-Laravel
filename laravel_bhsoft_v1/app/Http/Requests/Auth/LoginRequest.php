@@ -24,13 +24,13 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'=>[
+            'email' => [
                 'required',
                 'string',
                 'filled',
                 'email',
             ],
-            'password'=>[
+            'password' => [
                 'required',
                 'filled',
                 'string',

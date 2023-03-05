@@ -12,39 +12,37 @@ use Illuminate\Http\Request;
 class DashBoardController extends Controller
 {
     use ResponseTrait;
-    public function index(){
+
+    public function index()
+    {
         return view('admin.dashboard.index');
     }
-    public function apiDashboard(){
+
+    public function apiDashboard()
+    {
         $courses = Course::query()->selectRaw('count(id) as total')
             ->get();
         $users = User::query()->selectRaw('count(id) as total')
             ->get();
-//        $courses_signup = SignupCourse::query()
-//            ->selectRaw('COUNT(user) as total')
-//            ->groupBy('course')
-//            ->having('total','>',0)
-//            ->count('*');
-
         $courses_signup = Course::query()
-            ->whereExists(function ($query){
+            ->whereExists(function ($query) {
                 $query->select(Course::raw(1))
                     ->from('signup_courses')
                     ->whereRaw('courses.id = signup_courses.course');
             })
             ->count();
-        $topFiveUserSignuped = User::query()
-            ->addSelect('users.id','users.name')
+        $top_five_user_signuped = User::query()
+            ->addSelect('users.id', 'users.name')
             ->selectRaw('COUNT(signup_courses.course) as number_courses')
-            ->leftJoin('signup_courses','signup_courses.user','users.id')
+            ->leftJoin('signup_courses', 'signup_courses.user', 'users.id')
             ->groupBy('users.id')
-            ->orderBy('number_courses','desc')
-            ->where('users.role',1)
+            ->orderBy('number_courses', 'desc')
+            ->where('users.role', 1)
             ->limit(5)
             ->get();
-        $rank =1;
+        $rank = 1;
         $prev_score = null;
-        foreach ($topFiveUserSignuped as $user){
+        foreach ($top_five_user_signuped as $user) {
             if ($prev_score !== null && $user->number_courses !== $prev_score) {
                 $rank++;
             }
@@ -54,7 +52,7 @@ class DashBoardController extends Controller
         $data['courses'] = $courses;
         $data['users'] = $users;
         $data['courses_signup'] = $courses_signup;
-        $data['top_user'] = $topFiveUserSignuped;
+        $data['top_user'] = $top_five_user_signuped;
         return $this->successResponse($data);
     }
 }

@@ -48,14 +48,14 @@ class SendCourseExpirationNotification extends Command
     {
         $ldate = date('Y-m-d');
         $courses = User::query()
-            ->addSelect('courses.id as course_id','courses.name as course_name')
-            ->addSelect('users.id','users.name','users.email as email')
-            ->Join('signup_courses','signup_courses.user','users.id')
-            ->Join('courses','signup_courses.course','courses.id')
-            ->where('courses.end_date','<',$ldate)
-            ->where('signup_courses.expire','1')
+            ->addSelect('courses.id as course_id', 'courses.name as course_name')
+            ->addSelect('users.id', 'users.name', 'users.email as email')
+            ->Join('signup_courses', 'signup_courses.user', 'users.id')
+            ->Join('courses', 'signup_courses.course', 'courses.id')
+            ->where('courses.end_date', '<', $ldate)
+            ->where('signup_courses.expire', '1')
             ->get();
-        foreach ($courses as $course){
+        foreach ($courses as $course) {
             CourseExpireEvent::dispatch($course);
             UpdateCourseExpiredDatabase::dispatch($course);
         }

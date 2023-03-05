@@ -42,15 +42,17 @@
                     @csrf
                     <div class="form-group">
                         <label for="emailaddress">Email address</label>
-                        <input class="form-control" type="email" name="email" required="" placeholder="Enter your email">
+                        <input class="form-control" type="email" name="email" required=""
+                               placeholder="Enter your email">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input class="form-control" type="password" name="password" required="" id="password" placeholder="Enter your password">
+                        <input class="form-control" type="password" name="password" required="" id="password"
+                               placeholder="Enter your password">
                     </div>
 
                     <div class="form-group mb-0 text-center">
-                        <button class="btn btn-primary btn-block" ><i class="mdi mdi-login"></i> Log In </button>
+                        <button class="btn btn-primary btn-block"><i class="mdi mdi-login"></i> Log In</button>
                     </div>
                     <!-- social-->
                 </form>
@@ -58,7 +60,8 @@
 
                 <!-- Footer-->
                 <footer class="footer footer-alt">
-                    <p class="text-muted">Don't have an account? <a href="{{ route('signup') }}" class="text-muted ml-1"><b>Sign Up</b></a></p>
+                    <p class="text-muted">Don't have an account? <a href="{{ route('signup') }}"
+                                                                    class="text-muted ml-1"><b>Sign Up</b></a></p>
                 </footer>
 
             </div> <!-- end .card-body -->
@@ -70,7 +73,8 @@
     <div class="auth-fluid-right text-center">
         <div class="auth-user-testimonial">
             <h2 class="mb-3">I love the color!</h2>
-            <p class="lead"><i class="mdi mdi-format-quote-open"></i> It's a elegent templete. I love it very much! . <i class="mdi mdi-format-quote-close"></i>
+            <p class="lead"><i class="mdi mdi-format-quote-open"></i> It's a elegent templete. I love it very much! . <i
+                    class="mdi mdi-format-quote-close"></i>
             </p>
             <p>
                 - Hyper Admin User
@@ -86,7 +90,6 @@
 <script src="{{ asset('js/app.min.js') }}"></script>
 <script src="{{ asset('js/moment.js') }}"></script>
 <script src="{{ asset('js/helper.js') }}"></script>
-
 
 
 </body>

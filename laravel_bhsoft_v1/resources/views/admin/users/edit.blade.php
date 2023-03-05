@@ -1,8 +1,8 @@
 @extends('layout.master')
 @push('css')
     <style>
-        .error{
-            color:red
+        .error {
+            color: red
         }
     </style>
 @endpush
@@ -11,7 +11,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('admin.users.update',$user) }}" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="{{ route('admin.users.update',$user) }}" method="post"
+                          enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -21,7 +22,8 @@
                                 {{ $errors->first('name') }}
                             </span>
                             @endif
-                            <input class="form-control" type="text" name="name" value="{{ !old('name') ? $user->name : old('name') }}">
+                            <input class="form-control" type="text" name="name"
+                                   value="{{ !old('name') ? $user->name : old('name') }}">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -30,7 +32,8 @@
                                 {{ $errors->first('email') }}
                             </span>
                             @endif
-                            <input class="form-control" type="email" name="email" value="{{ !old('email') ? $user->email : old('email') }}">
+                            <input class="form-control" type="email" name="email"
+                                   value="{{ !old('email') ? $user->email : old('email') }}">
                         </div>
                         <div class="form-group">
                             <label for="birthday">Birthday</label>
@@ -39,7 +42,8 @@
                                 {{ $errors->first('birthdate') }}
                             </span>
                             @endif
-                            <input class="form-control" type="date" name="birthdate" value="{{ !old('birthdate') ? $user->birthdate : old('birthdate') }}">
+                            <input class="form-control" type="date" name="birthdate"
+                                   value="{{ !old('birthdate') ? $user->birthdate : old('birthdate') }}">
                         </div>
                         <div class="form-group">
                             <label for="phone_number">Phone Number</label>
@@ -48,7 +52,8 @@
                                 {{ $errors->first('phone_number') }}
                             </span>
                             @endif
-                            <input class="form-control" type="text" name="phone_number" value="{{ !old('phone_number') ? $user->phone_number : old('phone_number')}}">
+                            <input class="form-control" type="text" name="phone_number"
+                                   value="{{ !old('phone_number') ? $user->phone_number : old('phone_number')}}">
                         </div>
                         <div class="form-group">
                             <label for="logo">Avatar</label>
@@ -57,7 +62,7 @@
                                     {{ $errors->first('logo_new') }}
                                 </span>
                             @endif
-                            <input class="form-control" type="file" name="logo_new" >
+                            <input class="form-control" type="file" name="logo_new">
                             <label for="logo">Use avatar old</label>
                             <img height="100" src="{{ $user->logo }}" alt="">
                             <br>
@@ -87,7 +92,7 @@
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let data = [];
 
             $('#select-course').select2({
@@ -112,21 +117,21 @@
                     },
                 }
             })
-            if(localStorage.getItem('data')){
+            if (localStorage.getItem('data')) {
                 let course_old = JSON.parse(localStorage.getItem('data'));
-                course_old.forEach(function(value){
+                course_old.forEach(function (value) {
                     $('#select-course').append(`<option value="${value.id}" selected="selected">${value.title}</option>`)
                     // console.log(value.id)
                 })
                 localStorage.removeItem('data');
             }
-            $('#select-course').on('change', function(e){
+            $('#select-course').on('change', function (e) {
                 let all_course = $(this).select2('data')
                 data = [];
-                all_course.forEach(function(value){
+                all_course.forEach(function (value) {
                     let id = value.id;
                     let title = value.text;
-                    data.push({id,title});
+                    data.push({id, title});
                 })
                 localStorage.setItem('data', JSON.stringify(data))
             });

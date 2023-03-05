@@ -20,9 +20,10 @@ class UpdateCourseExpiredDatabase implements ShouldQueue
      * @return void
      */
     public $user;
+
     public function __construct($user)
     {
-        $this->user= $user;
+        $this->user = $user;
         //
     }
 
@@ -34,8 +35,8 @@ class UpdateCourseExpiredDatabase implements ShouldQueue
     public function handle()
     {
         SignupCourse::query()->where('course', $this->user->course_id)
-            ->where('user',$this->user->id)
-            ->update(['expire'=> 0]);
+            ->where('user', $this->user->id)
+            ->update(['expire' => 0]);
         //
     }
 }

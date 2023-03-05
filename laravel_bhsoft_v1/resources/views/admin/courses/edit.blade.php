@@ -1,8 +1,8 @@
 @extends('layout.master')
 @push('css')
     <style>
-        .error{
-            color:red
+        .error {
+            color: red
         }
     </style>
 @endpush
@@ -11,7 +11,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('admin.courses.update',$course) }}" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="{{ route('admin.courses.update',$course) }}" method="post"
+                          enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -21,7 +22,8 @@
                                 {{ $errors->first('name') }}
                             </span>
                             @endif
-                            <input class="form-control" type="text" name="name" value="{{ !old('name') ? $course->name : old('name') }}">
+                            <input class="form-control" type="text" name="name"
+                                   value="{{ !old('name') ? $course->name : old('name') }}">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
@@ -30,7 +32,8 @@
                                 {{ $errors->first('description') }}
                             </span>
                             @endif
-                            <textarea class="form-control" name="description" rows="12">{{ !old('description') ? $course->description : old('description') }}</textarea>
+                            <textarea class="form-control" name="description"
+                                      rows="12">{{ !old('description') ? $course->description : old('description') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="start_date">Start date</label>
@@ -39,7 +42,8 @@
                                 {{ $errors->first('start_date') }}
                             </span>
                             @endif
-                            <input class="form-control" type="date" name="start_date" value="{{ !old('start_date') ? $course->start_date : old('start_date') }}">
+                            <input class="form-control" type="date" name="start_date"
+                                   value="{{ !old('start_date') ? $course->start_date : old('start_date') }}">
                         </div>
                         <div class="form-group">
                             <label for="end_date">End date</label>
@@ -48,7 +52,8 @@
                                 {{ $errors->first('end_date') }}
                             </span>
                             @endif
-                            <input class="form-control" type="date" name="end_date" value="{{ !old('end_date') ? $course->end_date : old('end_date') }}">
+                            <input class="form-control" type="date" name="end_date"
+                                   value="{{ !old('end_date') ? $course->end_date : old('end_date') }}">
                         </div>
                         <button class="btn btn-primary">submit</button>
                     </form>

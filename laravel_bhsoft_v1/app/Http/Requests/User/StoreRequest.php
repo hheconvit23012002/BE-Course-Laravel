@@ -24,33 +24,33 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> [
+            'name' => [
                 'required',
                 'string',
                 'filled',
             ],
-            'email'=> [
+            'email' => [
                 'required',
                 'string',
                 'filled',
                 'email',
             ],
-            'birthdate'=>[
+            'birthdate' => [
                 'required',
                 'before:today',
                 'date',
             ],
-            'phone_number'=>[
+            'phone_number' => [
                 'required',
                 'regex:/(84|0[3|5|7|8|9])[0-9]{8}/',
             ],
-            'logo'=>[
+            'logo' => [
                 'required',
                 'image',
                 'mimes:jpeg,png,jpg,gif,svg',
                 'max:2048',
             ],
-            'course'=> [
+            'course' => [
                 'required',
                 'array',
                 'filled',
