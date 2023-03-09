@@ -3,8 +3,10 @@
 use App\Http\Controllers\Admin\CourseController as CourseControllerAlias;
 use App\Http\Controllers\Admin\DashBoardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Middleware\CheckApiAdminMiddleware;
+use App\Http\Middleware\CheckLoginedMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,21 +30,33 @@ Route::group([
     'as' => 'users.',
     'prefix' => 'users'
 ], function () {
-    Route::get('/', [UserController::class, 'allUser'])->name('all_users');
-    Route::post('/user', [UserController::class, 'getUser'])->name('get_user');
+    Route::get('/', [UserController::class, 'users'])->name('index');
+    Route::get('/show', [UserController::class, 'user'])->name('show');
+    Route::delete('/destroy', [UserController::class, 'destroy'])->name('destroy');
+    Route::post('/store', [UserController::class, 'store'])->name('store');
+    Route::post('/update/{user}', [UserController::class, 'update'])->name('update');
 });
 Route::group([
     'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'courses.',
     'prefix' => 'courses'
 ], function () {
-    Route::get('/', [CourseControllerAlias::class, 'allCourse'])->name('all_courses');
-    Route::post('/course', [CourseControllerAlias::class, 'getCourse'])->name('get_course');
+    Route::get('/', [CourseControllerAlias::class, 'courses'])->name('index');
+    Route::get('/show', [CourseControllerAlias::class, 'course'])->name('show');
+    Route::delete('/destroy', [CourseControllerAlias::class, 'destroy'])->name('destroy');
+    Route::post('/store', [CourseControllerAlias::class, 'store'])->name('store');
+    Route::put('/update/{course}', [CourseControllerAlias::class, 'update'])->name('update');
 });
 Route::group([
-    'middleware' => CheckApiAdminMiddleware::class,
+//    'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'dashboard',
     'prefix' => 'dashboard'
 ], function () {
     Route::get('/', [DashBoardController::class, 'apiDashboard']);
 });
+//
+//Route::group([
+////    'middleware' => CheckLoginedMiddleware::class,
+//], function () {
+//    Route::post('/login', [AuthController::class, 'processLogin'])->name('authenticate');
+//});

@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Model implements AuthenticatableContract
 {
     use Authenticatable;
     use HasFactory;
     use Notifiable;
+    use HasApiTokens;
 
     public function courses()
     {

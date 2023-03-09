@@ -45,13 +45,44 @@
 @endsection
 @push('js')
     <script>
+        function destroy(e){
+            let id = e.data("id")
+            $.ajax({
+                type:'Delete',
+                url:'{{ route('api.users.destroy')}}',
+                data:{
+                    id: id,
+                    '_token': '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    let parent_tr = e.parents('tr');
+                    parent_tr.remove();
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Delete success',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+                    })
+                },
+                error: function (response) {
+                    $.toast({
+                        heading: 'Server Error',
+                        text: 'error',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error'
+                    })
+                }
+            })
+        }
         $(document).ready(function () {
             function getData() {
                 const urlParams = new URLSearchParams(window.location.search);
                 $('#ip-search').val(urlParams.get('q') || '')
                 $("#ip-field").val(urlParams.get('field') || 'name').change();
                 $.ajax({
-                    url: '{{ route('api.users.all_users')}}',
+                    url: '{{ route('api.users.index')}}',
                     dataType: 'json',
                     data: {
                         page: {{ request()->get('page') ?? 1 }},
@@ -70,13 +101,10 @@
                                     <a href="tel:${value.phone_number}">${value.phone_number}</a>`
                             let edit = '<a class="btn btn-success" href="' + "{{ route('admin.users.edit', ['user' => 'valueId']) }}" + '">edit</a>';
                             edit = edit.replace('valueId', value.id);
-                            let destroy = '<form action="' + "{{ route("admin.$table.destroy",['user' => 'valueId']) }}" + '" method="POST">'
-                                + '@csrf'
-                                + '@method('DELETE')'
-                                + '<button class="btn btn-danger">delete</button>'
-                                + '</form>'
-                            destroy = destroy.replace('valueId', value.id);
-
+                            let destroy =
+                                `<button class="btn btn-danger" onclick="destroy($(this))" data-id=${value.id}>
+                                    Delete
+                                </button>`
                             $('#table-data').append($('<tr>')
                                 .append($('<td>').append(id))
                                 .append($('<td>').append(logo))
@@ -101,7 +129,6 @@
                     },
                 })
             }
-
             getData();
             $(document).on('click', '#paginate > li > a', function (e) {
                 e.preventDefault();
@@ -119,8 +146,15 @@
                 urlParams.set('field', field)
                 window.location.search = urlParams
             });
-            if (localStorage.getItem('data')) {
-                localStorage.removeItem('data');
+            if (localStorage.getItem('success')) {
+                $.toast({
+                    heading: 'Create success',
+                    text: localStorage.getItem('success'),
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'success'
+                })
+                localStorage.removeItem('success');
             }
         })
     </script>

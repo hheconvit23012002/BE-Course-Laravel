@@ -50,8 +50,8 @@
                 const parts = path.split('/');
                 const user = parts[parts.length - 1];
                 $.ajax({
-                    url: '{{ route("api.users.get_user") }}',
-                    type: 'POST',
+                    url: '{{ route("api.users.show") }}',
+                    type: 'GET',
                     dataType: 'json',
                     data: {
                         user: user
@@ -101,12 +101,11 @@
                         })
                     },
                     error: function (response) {
-                        /* Act on the event */
                         $.toast({
                             heading: 'Import Error',
-                            text: 'loi',
+                            text: response.responseJSON.message,
                             showHideTransition: 'slide',
-                            position: 'bottom-right',
+                            position: 'top-right',
                             icon: 'error'
                         })
                     },

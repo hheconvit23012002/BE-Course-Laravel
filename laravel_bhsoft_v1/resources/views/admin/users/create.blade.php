@@ -11,72 +11,34 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('admin.users.store') }}" method="post"
+                    <form class="form-horizontal" id="form-user" method="post"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
-                            @if($errors->any('name'))
-                                <span class="error">
-                                {{ $errors->first('name') }}
-                            </span>
-                            @endif
-                            <input class="form-control" type="text" name="name" value="{{ old('name') }}">
+                            <input class="form-control" type="text" name="name" value="">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            @if($errors->any('email'))
-                                <span class="error">
-                                {{ $errors->first('email') }}
-                            </span>
-                            @endif
-                            <input class="form-control" type="email" name="email" value="{{ old('email') }}">
+                            <input class="form-control" type="email" name="email" value="">
                         </div>
                         <div class="form-group">
                             <label for="birthday">Birthday</label>
-                            @if($errors->any('birthdate'))
-                                <span class="error">
-                                {{ $errors->first('birthdate') }}
-                            </span>
-                            @endif
-                            <input class="form-control" type="date" name="birthdate" value="{{ old('birthdate') }}">
+                            <input class="form-control" type="date" name="birthdate" value="">
                         </div>
                         <div class="form-group">
-
                             <label for="phone_number">Phone Number</label>
-                            @if($errors->any('phone_number'))
-                                <span class="error">
-                                {{ $errors->first('phone_number') }}
-                            </span>
-                            @endif
                             <input class="form-control" type="text" name="phone_number"
-                                   value="{{ old('phone_number') }}">
+                                   value="">
                         </div>
-
                         <div class="form-group">
                             <label for="logo">Avatar</label>
-
-                            @if($errors->any('logo'))
-                                <span class="error">
-                                {{ $errors->first('logo') }}
-                            </span>
-                            @endif
                             <input class="form-control" id="input-logo" type="file" name="logo"
-                                   value="{{ old('img') }}">
+                                   value="">
                         </div>
                         <div class="form-group">
                             <label>Course</label>
-                            @if($errors->any('course'))
-                                <span class="error">
-                                {{ $errors->first('course') }}
-                            </span>
-                            @endif
                             <select class="form-control" name="course[]" id="select-course" multiple="multiple">
-{{--                                @if(old('course')  !== null)--}}
-{{--                                    <option value="{{ old('course') }}" selected="selected">--}}
-{{--                                        {{ old('item_title') }}--}}
-{{--                                    </option>--}}
-{{--                                @endif--}}
                             </select>
                         </div>
                         <button class="btn btn-primary">submit</button>
@@ -90,8 +52,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            let data = [];
-
             $('#select-course').select2({
                 ajax: {
                     delay: 250,
@@ -113,25 +73,30 @@
                     },
                 }
             })
-            if (localStorage.getItem('data')) {
-                let course_old = JSON.parse(localStorage.getItem('data'));
-                course_old.forEach(function (value) {
-                    $('#select-course').append(`<option value="${value.id}" selected="selected">${value.title}</option>`)
+            $('#form-user').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '{{ route('api.users.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        window.location.href = '/admin/users'
+                        localStorage.setItem('success', JSON.stringify("Thêm thành công"))
+                    },
+                    error: function (response) {
+                        $.toast({
+                            heading: 'Server Error',
+                            text: response.responseJSON,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+                        })
+                    }
                 })
-                localStorage.removeItem('data');
-            }
-            // $('#input-logo').on('change',function(e){
-            //     $('#item_img').val($(this).val())
-            // })
-            $('#select-course').on('change', function (e) {
-                let all_course = $(this).select2('data')
-                data = [];
-                all_course.forEach(function (value) {
-                    let id = value.id;
-                    let title = value.text;
-                    data.push({id, title});
-                })
-                localStorage.setItem('data', JSON.stringify(data))
             });
         });
     </script>

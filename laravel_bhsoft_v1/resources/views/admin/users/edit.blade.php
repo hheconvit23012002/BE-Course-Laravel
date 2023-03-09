@@ -11,75 +11,40 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('admin.users.update',$user) }}" method="post"
+                    <form class="form-horizontal" method="post" id="form-user"
                           enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+{{--                        @csrf--}}
+                        <meta name="csrf-token" content="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label for="name">Name</label>
-                            @if($errors->any('name'))
-                                <span class="error">
-                                {{ $errors->first('name') }}
-                            </span>
-                            @endif
                             <input class="form-control" type="text" name="name"
-                                   value="{{ !old('name') ? $user->name : old('name') }}">
+                                   id="name" value="">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            @if($errors->any('email'))
-                                <span class="error">
-                                {{ $errors->first('email') }}
-                            </span>
-                            @endif
                             <input class="form-control" type="email" name="email"
-                                   value="{{ !old('email') ? $user->email : old('email') }}">
+                                   id="email" value="">
                         </div>
                         <div class="form-group">
                             <label for="birthday">Birthday</label>
-                            @if($errors->any('birthdate'))
-                                <span class="error">
-                                {{ $errors->first('birthdate') }}
-                            </span>
-                            @endif
                             <input class="form-control" type="date" name="birthdate"
-                                   value="{{ !old('birthdate') ? $user->birthdate : old('birthdate') }}">
+                                  id="birthdate" value="">
                         </div>
                         <div class="form-group">
                             <label for="phone_number">Phone Number</label>
-                            @if($errors->any('phone_number'))
-                                <span class="error">
-                                {{ $errors->first('phone_number') }}
-                            </span>
-                            @endif
                             <input class="form-control" type="text" name="phone_number"
-                                   value="{{ !old('phone_number') ? $user->phone_number : old('phone_number')}}">
+                                  id="phone_number" value="">
                         </div>
                         <div class="form-group">
                             <label for="logo">Avatar</label>
-                            @if($errors->any('logo_new'))
-                                <span class="error">
-                                    {{ $errors->first('logo_new') }}
-                                </span>
-                            @endif
                             <input class="form-control" type="file" name="logo_new">
                             <label for="logo">Use avatar old</label>
-                            <img height="100" src="{{ $user->logo }}" alt="">
+                            <img height="100" id="img-old" src="" alt="">
                             <br>
                         </div>
                         <div class="form-group">
                             <label>Course</label>
-                            @if($errors->any('course'))
-                                <span class="error">
-                                {{ $errors->first('course') }}
-                            </span>
-                            @endif
                             <select class="form-control" name="course[]" id="select-course" multiple="multiple">
-                                @foreach($courses as $each)
-                                    <option value="{{ $each->courses->id }}" selected="selected">
-                                        {{ $each->courses->name }}
-                                    </option>
-                                @endforeach
                             </select>
                         </div>
                         <button class="btn btn-primary">submit</button>
@@ -93,8 +58,45 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            const path = window.location.pathname;
+            const parts = path.split('/');
+            let user = parts[parts.length - 1];
+            $.ajax({
+                url: '{{ route("api.users.show") }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    user: user
+                },
+                success: function (response) {
+                    let user = response.data.user
+                    let courses = response.data.course
+                    console.log(courses)
+                    $("#name").val(user.name)
+                    $("#email").val(user.email)
+                    $("#birthdate").val(user.birthdate)
+                    $("#phone_number").val(user.phone_number)
+                    $("#img-old").attr('src',user.logo)
+                    courses.forEach(function (value) {
+                        $('#select-course').append(`<option value="${value.course}" selected="selected">${value.courses.name}</option>`)
+                    })
+                },
+                error: function (response) {
+                    $.toast({
+                        heading: 'Server Error',
+                        text: response.responseJSON.message,
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error'
+                    })
+                },
+            })
             let data = [];
-
             $('#select-course').select2({
                 ajax: {
                     delay: 250,
@@ -105,7 +107,6 @@
                         };
                     },
                     processResults: function (data) {
-                        console.log(data);
                         return {
                             results: $.map(data.data, function (item) {
                                 return {
@@ -117,24 +118,32 @@
                     },
                 }
             })
-            if (localStorage.getItem('data')) {
-                let course_old = JSON.parse(localStorage.getItem('data'));
-                course_old.forEach(function (value) {
-                    $('#select-course').append(`<option value="${value.id}" selected="selected">${value.title}</option>`)
-                    // console.log(value.id)
+            $("#form-user").submit(function(e){
+                e.preventDefault();
+                user = parseInt(user)
+                let formData = new FormData(this);
+                $.ajax({
+                    url: `http://laravel_bhsoft_v1.test/api/users/update/${user}`,
+                    type: 'POST',
+                    data:formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        window.location.href = '/admin/users'
+                        localStorage.setItem('success', JSON.stringify("Sửa thành công"))
+                    },
+                    error: function (response) {
+                        $.toast({
+                            heading: 'Server Error',
+                            text: response.responseJSON.message || response.responseJSON,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+                        })
+                    },
                 })
-                localStorage.removeItem('data');
-            }
-            $('#select-course').on('change', function (e) {
-                let all_course = $(this).select2('data')
-                data = [];
-                all_course.forEach(function (value) {
-                    let id = value.id;
-                    let title = value.text;
-                    data.push({id, title});
-                })
-                localStorage.setItem('data', JSON.stringify(data))
-            });
+            })
         });
     </script>
 @endpush

@@ -30,7 +30,7 @@
                         <div class="text-center w-75 m-auto">
                             <h4 class="text-dark-50 text-center mt-0 font-weight-bold">Free Sign Up</h4>
                         </div>
-                        <form action="{{ route('process_signup') }}" method="POST">
+                        <form action="{{ route('process_signup') }}" method="POST" id="form-signup">
                             @csrf
 
                             <div class="form-group">
@@ -102,5 +102,29 @@
 
 <script src="{{ asset('js/vendor.min.js') }}"></script>
 <script src="{{ asset('js/app.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#form-signup').submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('process_signup') }}',
+                type: 'POST',
+                data: $(this).serialize(),
+                success : function(response){
+                    window.location.href = '/login';
+                },
+                error: function (response) {
+                    $.toast({
+                        heading: 'Server Error',
+                        text: "Sai email hoac mat khau",
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error'
+                    })
+                }
+            })
+        })
+    });
+</script>
 </body>
 </html>

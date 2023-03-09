@@ -11,49 +11,29 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="form-horizontal" action="{{ route('admin.courses.update',$course) }}" method="post"
+                    <form class="form-horizontal" method="post" id="form-course"
                           enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
                         <div class="form-group">
                             <label for="name">Name</label>
-                            @if($errors->any('name'))
-                                <span class="error">
-                                {{ $errors->first('name') }}
-                            </span>
-                            @endif
-                            <input class="form-control" type="text" name="name"
-                                   value="{{ !old('name') ? $course->name : old('name') }}">
+                            <input class="form-control" type="text" id="name" name="name"
+                                   value="">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            @if($errors->any('description'))
-                                <span class="error">
-                                {{ $errors->first('description') }}
-                            </span>
-                            @endif
-                            <textarea class="form-control" name="description"
-                                      rows="12">{{ !old('description') ? $course->description : old('description') }}</textarea>
+                            <textarea class="form-control" id="description" name="description"
+                                      rows="12">
+                            </textarea>
                         </div>
                         <div class="form-group">
                             <label for="start_date">Start date</label>
-                            @if($errors->any('start_date'))
-                                <span class="error">
-                                {{ $errors->first('start_date') }}
-                            </span>
-                            @endif
-                            <input class="form-control" type="date" name="start_date"
-                                   value="{{ !old('start_date') ? $course->start_date : old('start_date') }}">
+                            <input class="form-control" type="date" id="start_date" name="start_date"
+                                   value="">
                         </div>
                         <div class="form-group">
                             <label for="end_date">End date</label>
-                            @if($errors->any('end_date'))
-                                <span class="error">
-                                {{ $errors->first('end_date') }}
-                            </span>
-                            @endif
-                            <input class="form-control" type="date" name="end_date"
-                                   value="{{ !old('end_date') ? $course->end_date : old('end_date') }}">
+                            <input class="form-control" type="date" id="end_date" name="end_date"
+                                   value="">
                         </div>
                         <button class="btn btn-primary">submit</button>
                     </form>
@@ -62,3 +42,62 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function() {
+            const path = window.location.pathname;
+            const parts = path.split('/');
+            let course = parts[parts.length - 1];
+            $.ajax({
+                url: '{{ route("api.courses.show") }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    course: course
+                },
+                success: function (response) {
+                    let course = response.data.course
+                    $("#name").val(course.name)
+                    $("#description").val(course.description)
+                    $("#start_date").val(course.start_date)
+                    $("#end_date").val(course.end_date)
+                },
+                error: function (response) {
+                    $.toast({
+                        heading: 'Server Error',
+                        text: response.responseJSON.message,
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error'
+                    })
+                },
+            })
+
+            $("#form-course").submit(function(e){
+                e.preventDefault();
+                course = parseInt(course)
+                console.log(course)
+                $.ajax({
+                    url: `http://laravel_bhsoft_v1.test/api/courses/update/${course}`,
+                    type: 'PUT',
+                    dataType: 'json',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        window.location.href = '/admin/courses'
+                        localStorage.setItem('success', JSON.stringify("Sửa thành công"))
+                    },
+                    error: function (response) {
+                        console.log(course)
+                        $.toast({
+                            heading: 'Server Error',
+                            text: response.responseJSON,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+                        })
+                    },
+                })
+            })
+        });
+    </script>
+@endpush

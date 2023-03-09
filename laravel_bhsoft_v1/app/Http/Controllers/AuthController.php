@@ -6,12 +6,16 @@ use App\Events\UserRegisterEvent;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    use ResponseTrait;
+
     public function login()
     {
 
@@ -33,14 +37,20 @@ class AuthController extends Controller
             }
             if (isset($user)) {
                 Auth::login($user, true);
+                $token = $user->createToken('access-token');
             }
+            $arr = [];
             if ($user->role === 0) {
-                return redirect()->route('admin.users.index');
+                $arr['route'] = '/admin/users/';
             } else {
-                return redirect()->route('user.index');
+                $arr['route'] = '/';
             }
-        } catch (\Throwable $e) {
-            return redirect()->route('login')->with('error', 'sai email hoặc password');
+            $arr['_token'] = $token->accessToken;
+            return $this->successResponse($arr);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse('sai email hoặc password', 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
@@ -54,14 +64,19 @@ class AuthController extends Controller
             $user->password = $password;
             $user->save();
             UserRegisterEvent::dispatch($user);
-            return redirect()->route('login')->with('success', 'dang ky thanh cong');
+            return $this->successResponse();
         } catch (\Throwable $e) {
-            return redirect()->route('signup')->with('error', 'sai email hoặc password');
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 
     public function logout()
     {
+        $user = Auth::user();
+        $tokens = $user->tokens;
+        foreach ($tokens as $token) {
+            $token->delete();
+        }
         auth()->logout();
         return redirect()->route('login');
     }

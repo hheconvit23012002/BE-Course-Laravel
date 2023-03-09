@@ -10,6 +10,9 @@ use App\Http\Requests\Course\UpdateRequest;
 use App\Imports\CourseImport;
 use App\Models\Course;
 use App\Models\SignupCourse;
+use Facade\FlareClient\Http\Exceptions\NotFound;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -18,6 +21,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class CourseController extends Controller
 {
     use ResponseTrait;
+
     private object $model;
     private string $table;
 
@@ -34,53 +38,65 @@ class CourseController extends Controller
         return view("admin.$this->table.index");
     }
 
-    public function allCourse(Request $request)
+    public function courses(Request $request)
     {
-        $q = $request->get('q');
-        $field = $request->get('field');
-        $query = $this->model
-            ->select([
-                'id',
-                'name',
-                'description',
-                'start_date',
-                'end_date',
-            ]);
-        if (isset($q) && isset($field)) {
-            $query->where("courses.$field", 'like', '%' . $q . '%');
+        try {
+            $q = $request->get('q');
+            $field = $request->get('field');
+            $query = $this->model
+                ->select([
+                    'id',
+                    'name',
+                    'description',
+                    'start_date',
+                    'end_date',
+                ]);
+            if (isset($q) && isset($field)) {
+                $query->where("courses.$field", 'like', '%' . $q . '%');
+            }
+            $data = $query->paginate()
+                ->appends(['q' => $q])
+                ->appends(['field' => $field]);
+            $arr['data'] = $data->getCollection();
+            $arr['pagination'] = $data->linkCollection();
+            return $this->successResponse($arr);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
         }
-        $data = $query->paginate()
-            ->appends(['q' => $q])
-            ->appends(['field' => $field]);
-        $arr['data'] = $data->getCollection();
-        $arr['pagination'] = $data->linkCollection();
-        return $this->successResponse($arr);
     }
 
-    public function getCourse(Request $request)
+    public function course(Request $request)
     {
-        if (empty($request->course)) {
-            return redirect()->back();
+        try {
+            if (empty($request->course)) {
+                throw new NotFound('Course not found');
+            }
+            $id = $request->course;
+            $course = $this->model
+                ->select([
+                    'id',
+                    'name',
+                    'description',
+                    'start_date',
+                    'end_date',
+                ])
+                ->where('id', $id)
+                ->firstOrFail();
+            $users = SignupCourse::query()
+                ->with('users:id,name,email,phone_number')
+                ->where('course', $id)
+                ->where('expire', 1)
+                ->get();
+            $arr['course'] = $course;
+            $arr['users'] = $users;
+            return $this->successResponse($arr);
+        } catch (NotFound $e) {
+            return $this->errorResponse("Vui lòng nhập id ", 404);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse("Không tồn tại", 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
         }
-        $id = $request->course;
-        $course = $this->model
-            ->select([
-                'id',
-                'name',
-                'description',
-                'start_date',
-                'end_date',
-            ])
-            ->where('id', $id)
-            ->first();
-        $users = SignupCourse::query()
-            ->with('users:id,name,email,phone_number')
-            ->where('course', $id)
-            ->where('expire', 1)
-            ->get();
-        $arr['course'] = $course;
-        $arr['users'] = $users;
-        return $this->successResponse($arr);
     }
 
     public function show($request)
@@ -90,32 +106,24 @@ class CourseController extends Controller
 
     public function edit($request)
     {
-        if (empty($request)) {
-            return redirect()->back();
-        }
-        $course = $this->model
-            ->select([
-                'id',
-                'name',
-                'description',
-                'start_date',
-                'end_date',
-            ])
-            ->where('id', $request)
-            ->first();
-        return \view("admin.$this->table.edit", [
-            'course' => $course,
-        ]);
+        return view("admin.$this->table.edit");
     }
 
-    public function update(UpdateRequest $request, $user)
+    public function update(UpdateRequest $request, $course)
     {
-        $arr = $request->validated();
-        if (empty($arr['description'])) {
-            $arr['description'] = '';
+        try {
+            Course::query()->where('id', $course)->firstOrFail();
+            $arr = $request->validated();
+            if (empty($arr['description'])) {
+                $arr['description'] = '';
+            }
+            $this->model->where('id', $course)->update($arr);
+            return $this->successResponse();
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse('Người dùng không tôn tại', 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
         }
-        $this->model->where('id', $user)->first()->update($arr);
-        return redirect()->route("admin.$this->table.index")->with('success', 'Thay đổi thành công');
     }
 
     public function create()
@@ -125,14 +133,31 @@ class CourseController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->model->create($request->validated());
-        return redirect()->route("admin.$this->table.index")->with('success', 'Thêm thành công');
+        try {
+            $this->model->create($request->validated());
+            return $this->successResponse();
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+//        $this->model->create($request->validated());
+//        return redirect()->route("admin.$this->table.index")->with('success', 'Thêm thành công');
     }
 
-    public function destroy($userId)
+    public function destroy(Request $request)
     {
-        Course::destroy($userId);
-        return redirect()->back()->with('success', 'Xóa thành công');
+        try {
+            Course::query()->
+            where('id', $request->id)
+                ->firstOrFail();
+            Course::destroy($request->id);
+            return $this->successResponse();
+        } catch (ModelNotFoundException $e) {
+            return $this->errorResponse("Không tồn tại khoá học được xóa", 404);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+//        Course::destroy($userId);
+//        return redirect()->back()->with('success', 'Xóa thành công');
     }
 
     public function importCsv(Request $request)

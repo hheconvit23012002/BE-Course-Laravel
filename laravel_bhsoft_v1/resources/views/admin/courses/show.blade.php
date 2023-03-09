@@ -47,8 +47,8 @@
                 const parts = path.split('/');
                 const course = parts[parts.length - 1];
                 $.ajax({
-                    url: '{{ route("api.courses.get_course") }}',
-                    type: 'POST',
+                    url: '{{ route("api.courses.show") }}',
+                    type: 'GET',
                     dataType: 'json',
                     data: {
                         course: course
@@ -84,18 +84,16 @@
                         })
                     },
                     error: function (response) {
-                        /* Act on the event */
                         $.toast({
-                            heading: 'Import Error',
-                            text: 'loi',
+                            heading: 'Server Error',
+                            text: response.responseJSON.message,
                             showHideTransition: 'slide',
-                            position: 'bottom-right',
+                            position: 'top-right',
                             icon: 'error'
                         })
                     },
                 })
             }
-
             getData()
         })
     </script>

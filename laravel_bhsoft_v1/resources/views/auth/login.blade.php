@@ -38,7 +38,7 @@
                         {{ session()->get('error') }}
                     </div>
                 @endif
-                <form action="{{ route('process_login') }}" method="POST">
+                <form  method="POST" id="form-login">
                     @csrf
                     <div class="form-group">
                         <label for="emailaddress">Email address</label>
@@ -54,7 +54,6 @@
                     <div class="form-group mb-0 text-center">
                         <button class="btn btn-primary btn-block"><i class="mdi mdi-login"></i> Log In</button>
                     </div>
-                    <!-- social-->
                 </form>
                 <!-- end form-->
 
@@ -88,9 +87,34 @@
 <!-- bundle -->
 <script src="{{ asset('js/vendor.min.js') }}"></script>
 <script src="{{ asset('js/app.min.js') }}"></script>
-<script src="{{ asset('js/moment.js') }}"></script>
-<script src="{{ asset('js/helper.js') }}"></script>
-
+<script>
+    $(document).ready(function() {
+        if(localStorage.getItem('token')){
+            localStorage.removeItem('token')
+        }
+        $('#form-login').submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('authenticate') }}',
+                type: 'POST',
+                data: $(this).serialize(),
+                success : function(response){
+                    localStorage.setItem('token',JSON.stringify(response.data._token));
+                    window.location.href = response.data.route;
+                },
+                error: function (response) {
+                    $.toast({
+                        heading: 'Server Error',
+                        text: "Sai email hoac mat khau",
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error'
+                    })
+                }
+            })
+        })
+    });
+</script>
 
 </body>
 </html>

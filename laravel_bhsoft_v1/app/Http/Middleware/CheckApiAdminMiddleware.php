@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckApiAdminMiddleware
 {
@@ -16,6 +17,7 @@ class CheckApiAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+//        dd(Auth::guard('api')->check());
         if (auth()->check()) {
             if (auth()->user()->role === 1) {
                 return redirect()->route('not_found');

@@ -49,18 +49,53 @@
 @endsection
 @push('js')
     <script>
+        function destroy(e){
+            let id = e.data("id")
+            $.ajax({
+                type:'Delete',
+                url:'{{ route('api.courses.destroy')}}',
+                data:{
+                    id:id,
+                    '_token': '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    let parent_tr = e.parents('tr');
+                    parent_tr.remove();
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Delete success',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+                    })
+                },
+                error: function (response) {
+                    $.toast({
+                        heading: 'Server Error',
+                        text: 'error',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'error'
+                    })
+                }
+            })
+        }
         $(document).ready(function () {
+
             let urlParams = new URLSearchParams(window.location.search)
             $('#ip-search').val(urlParams.get('q') || '')
             $("#ip-field").val(urlParams.get('field') || 'name').change();
             $.ajax({
-                url: '{{ route('api.courses.all_courses')}}',
+                url: '{{ route('api.courses.index')}}',
                 dataType: 'json',
                 data: {
                     page: {{ request()->get('page') ?? 1 }},
                     q: urlParams.has('q') ? urlParams.get('q') : '',
                     field: urlParams.has('field') ? urlParams.get('field') : 'name',
                 },
+                // beforeSend: function(xhr) {
+                //     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+                // },
                 success: function (response) {
                     response.data.data.forEach(function (value, index) {
                         let id = '<a href="' + "{{ route('admin.courses.show', ['course' => 'valueId']) }}" + '">' + `${value.id}` + '</a>';
@@ -68,13 +103,10 @@
                         let name = `${value.name}`
                         let edit = '<a class="btn btn-success" href="' + "{{ route('admin.courses.edit', ['course' => 'valueId']) }}" + '">edit</a>';
                         edit = edit.replace('valueId', value.id);
-                        let destroy = '<form action="' + "{{ route("admin.$table.destroy",['course' => 'valueId']) }}" + '" method="POST">'
-                            + '@csrf'
-                            + '@method('DELETE')'
-                            + '<button class="btn btn-danger">delete</button>'
-                            + '</form>'
-                        destroy = destroy.replace('valueId', value.id);
-
+                        let destroy =
+                        `<button class="btn btn-danger" onclick="destroy($(this))" data-id=${value.id}>
+                            Delete
+                        </button>`
                         $('#table-data').append($('<tr>')
                             .append($('<td>').append(id))
                             .append($('<td>').append(name))
@@ -87,18 +119,28 @@
                     renderPagination(response.data.pagination)
                 },
                 error: function (response) {
-                    /* Act on the event */
                     $.toast({
-                        heading: 'Import Error',
-                        text: 'loi',
+                        heading: 'Server Error',
+                        text: 'error',
                         showHideTransition: 'slide',
-                        position: 'bottom-right',
+                        position: 'top-right',
                         icon: 'error'
                     })
                 },
             })
+
             if (localStorage.getItem('data')) {
                 localStorage.removeItem('data');
+            }
+            if (localStorage.getItem('success')) {
+                $.toast({
+                    heading: 'Create success',
+                    text: localStorage.getItem('success'),
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'success'
+                })
+                localStorage.removeItem('success');
             }
             $("#csv").change(function (event) {
                 /* Act on the event */

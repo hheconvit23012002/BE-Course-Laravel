@@ -1,0 +1,897 @@
+{
+	"info": {
+		"_postman_id": "759ed314-124f-4cd2-ad34-6ffd81624c73",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24359048"
+	},
+	"item": [
+		{
+			"name": "getAllUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/users?page=1&q=&field=name",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "q",
+							"value": ""
+						},
+						{
+							"key": "field",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getAllUser",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/users?page=1&q=&field=name",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "q",
+									"value": ""
+								},
+								{
+									"key": "field",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "getUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/users/show?user=3",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"show"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "3"
+						}
+					]
+				},
+				"description": "Xem chi tiết user"
+			},
+			"response": [
+				{
+					"name": "getUser",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/users/show?user=3",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"users",
+								"show"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "getAllCourse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/courses?page=1&q=&field=name",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"courses"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "q",
+							"value": ""
+						},
+						{
+							"key": "field",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getAllCourse",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/courses?page=1&q=&field=name",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "q",
+									"value": ""
+								},
+								{
+									"key": "field",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "getCourse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/courses/show?course=5",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"courses",
+						"show"
+					],
+					"query": [
+						{
+							"key": "course",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "getCourse",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/courses/show?course=5",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"courses",
+								"show"
+							],
+							"query": [
+								{
+									"key": "course",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "destroyUser",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}api/users/destroy",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"destroy"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "destroyUser",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/users/destroy",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"users",
+								"destroy"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "destroyCourse",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}api/users/destroy",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"destroy"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "destroyCourse",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/users/destroy",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"users",
+								"destroy"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "storeUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "da444nhh@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "birthdate",
+							"value": "2023-03-07",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "0312456789",
+							"type": "text"
+						},
+						{
+							"key": "logo",
+							"type": "file",
+							"src": "/C:/Users/Admin/Downloads/anh(2).jpg"
+						},
+						{
+							"key": "course[]",
+							"value": "7",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}api/users/store",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users",
+						"store"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "storeUser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "a",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "da444nhh@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "birthdate",
+									"value": "2023-03-07",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "0312456789",
+									"type": "text"
+								},
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/Admin/Downloads/anh(2).jpg"
+								},
+								{
+									"key": "course[]",
+									"value": "7",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/users/store",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"users",
+								"store"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "storeCourse",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "ds",
+							"type": "text"
+						},
+						{
+							"key": "start_date",
+							"value": "2023-03-06",
+							"type": "text"
+						},
+						{
+							"key": "end_date",
+							"value": "2023-03-23",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}api/courses/store",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"courses",
+						"store"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "storeCourse",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "a",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "ds",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "2023-03-06",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2023-03-23",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/api/courses/store",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"api",
+								"courses",
+								"store"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "import-csv",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Admin/Downloads/course.xlsx"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}admin/courses/import-csv",
+					"host": [
+						"{{url}}admin"
+					],
+					"path": [
+						"courses",
+						"import-csv"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "import-csv",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Admin/Downloads/course.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/admin/courses/import-csv",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"admin",
+								"courses",
+								"import-csv"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Export-csv",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}admin/courses/export-csv",
+					"host": [
+						"{{url}}admin"
+					],
+					"path": [
+						"courses",
+						"export-csv"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Export-csv",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://laravel_bhsoft_v1.test/admin/courses/export-csv",
+							"protocol": "http",
+							"host": [
+								"laravel_bhsoft_v1",
+								"test"
+							],
+							"path": [
+								"admin",
+								"courses",
+								"export-csv"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/dashboard/",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"dashboard",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "dashboard",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/dashboard/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"dashboard",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "dadsdsdnhvvhuan23012002@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}login",
+					"host": [
+						"{{url}}login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "dadsdsdnhvvhuan23012002@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}login",
+							"host": [
+								"{{url}}login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "a",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "dsssssanh@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}signup",
+					"host": [
+						"{{url}}signup"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "signup",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "a",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "dsssssanh@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}signup",
+							"host": [
+								"{{url}}signup"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}logout",
+					"host": [
+						"{{url}}logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "logout",
+					"originalRequest": {
+						"method": "GET",
+						"header": []
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}

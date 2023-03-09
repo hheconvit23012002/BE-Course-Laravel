@@ -29,25 +29,30 @@ class UserController extends Controller
 
     public function user()
     {
-        $userId = auth()->user()->id;
-        $user = $this->model
-            ->select([
-                'id',
-                'name',
-                'email',
-                'birthdate',
-                'phone_number',
-                'logo',
-            ])
-            ->where('id', $userId)
-            ->first();
-        $courses = SignupCourse::query()
-            ->with('courses:id,name,start_date,end_date')
-            ->where('user', $userId)
-            ->where('expire', 1)
-            ->get();
-        $arr['user'] = $user;
-        $arr['courses'] = $courses;
-        return $this->successResponse($arr);
+        try{
+            $userId = auth()->user()->id;
+            $user = $this->model
+                ->select([
+                    'id',
+                    'name',
+                    'email',
+                    'birthdate',
+                    'phone_number',
+                    'logo',
+                ])
+                ->where('id', $userId)
+                ->first();
+            $courses = SignupCourse::query()
+                ->with('courses:id,name,start_date,end_date')
+                ->where('user', $userId)
+                ->where('expire', 1)
+                ->get();
+            $arr['user'] = $user;
+            $arr['courses'] = $courses;
+            return $this->successResponse($arr);
+        }catch (\Exception $e){
+            return $this->errorResponse($e->getMessage(),500);
+        }
+
     }
 }

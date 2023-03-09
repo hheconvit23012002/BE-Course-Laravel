@@ -24,7 +24,7 @@ Route::group([
     'middleware' => CheckLoginedMiddleware::class,
 ], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'processLogin'])->name('process_login');
+    Route::post('/login', [AuthController::class, 'processLogin'])->name('authenticate');
     Route::get('/signup', [AuthController::class, 'signup'])->name('signup');
     Route::post('/signup', [AuthController::class, 'processSignup'])->name('process_signup');
 });
@@ -39,9 +39,4 @@ Route::group([
 });
 
 Route::get('/test', [TestController::class, 'index']);
-//Route::get('/test',function (){
-//   return view('admin.dashboard.index');
-//});
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+
