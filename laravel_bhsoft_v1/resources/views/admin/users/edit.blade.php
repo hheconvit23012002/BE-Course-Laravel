@@ -14,6 +14,7 @@
                     <form class="form-horizontal" method="post" id="form-user"
                           enctype="multipart/form-data">
 {{--                        @csrf--}}
+                        @method('put')
                         <meta name="csrf-token" content="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -58,16 +59,11 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             const path = window.location.pathname;
             const parts = path.split('/');
             let user = parts[parts.length - 1];
             $.ajax({
-                url: '{{ route("api.users.show") }}',
+                url: `http://laravel_bhsoft_v1.test/api/users/${user}`,
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -123,7 +119,7 @@
                 user = parseInt(user)
                 let formData = new FormData(this);
                 $.ajax({
-                    url: `http://laravel_bhsoft_v1.test/api/users/update/${user}`,
+                    url: `http://laravel_bhsoft_v1.test/api/users/${user}`,
                     type: 'POST',
                     data:formData,
                     cache: false,

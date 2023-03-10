@@ -45,14 +45,11 @@
             function getData() {
                 const path = window.location.pathname;
                 const parts = path.split('/');
-                const course = parts[parts.length - 1];
+                let course = parts[parts.length - 1];
                 $.ajax({
-                    url: '{{ route("api.courses.show") }}',
+                    url: `http://laravel_bhsoft_v1.test/api/courses/${course}`,
                     type: 'GET',
                     dataType: 'json',
-                    data: {
-                        course: course
-                    },
                     success: function (response) {
                         let course = response.data.course
                         let users = response.data.users

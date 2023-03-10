@@ -65,13 +65,12 @@ class CourseController extends Controller
         }
     }
 
-    public function course(Request $request)
+    public function course($id)
     {
         try {
-            if (empty($request->course)) {
+            if (empty($id)) {
                 throw new NotFound('Course not found');
             }
-            $id = $request->course;
             $course = $this->model
                 ->select([
                     'id',
@@ -143,13 +142,13 @@ class CourseController extends Controller
 //        return redirect()->route("admin.$this->table.index")->with('success', 'Thêm thành công');
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         try {
             Course::query()->
-            where('id', $request->id)
+            where('id', $id)
                 ->firstOrFail();
-            Course::destroy($request->id);
+            Course::destroy($id);
             return $this->successResponse();
         } catch (ModelNotFoundException $e) {
             return $this->errorResponse("Không tồn tại khoá học được xóa", 404);

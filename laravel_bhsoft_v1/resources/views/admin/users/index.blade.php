@@ -49,9 +49,8 @@
             let id = e.data("id")
             $.ajax({
                 type:'Delete',
-                url:'{{ route('api.users.destroy')}}',
+                url:`http://laravel_bhsoft_v1.test/api/users/${id}`,
                 data:{
-                    id: id,
                     '_token': '{{ csrf_token() }}'
                 },
                 success: function (response) {

@@ -50,12 +50,9 @@
                 const parts = path.split('/');
                 const user = parts[parts.length - 1];
                 $.ajax({
-                    url: '{{ route("api.users.show") }}',
+                    url: `http://laravel_bhsoft_v1.test/api/users/${user}`,
                     type: 'GET',
                     dataType: 'json',
-                    data: {
-                        user: user
-                    },
                     success: function (response) {
                         let user = response.data.user
                         let course = response.data.course

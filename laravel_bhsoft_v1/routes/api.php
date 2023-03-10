@@ -26,26 +26,26 @@ use Illuminate\Support\Facades\Route;
 //});
 Route::get('/coursesSelect2', [CourseController::class, 'index'])->name('coursesSelect2');
 Route::group([
-    'middleware' => CheckApiAdminMiddleware::class,
+//    'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'users.',
     'prefix' => 'users'
 ], function () {
     Route::get('/', [UserController::class, 'users'])->name('index');
-    Route::get('/show', [UserController::class, 'user'])->name('show');
-    Route::delete('/destroy', [UserController::class, 'destroy'])->name('destroy');
-    Route::post('/store', [UserController::class, 'store'])->name('store');
-    Route::post('/update/{user}', [UserController::class, 'update'])->name('update');
+    Route::get('/{id}', [UserController::class, 'user'])->name('show');
+    Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    Route::post('/', [UserController::class, 'store'])->name('store');
+    Route::put('/{id}', [UserController::class, 'update'])->name('update');
 });
 Route::group([
-    'middleware' => CheckApiAdminMiddleware::class,
+//    'middleware' => CheckApiAdminMiddleware::class,
     'as' => 'courses.',
     'prefix' => 'courses'
 ], function () {
     Route::get('/', [CourseControllerAlias::class, 'courses'])->name('index');
-    Route::get('/show', [CourseControllerAlias::class, 'course'])->name('show');
-    Route::delete('/destroy', [CourseControllerAlias::class, 'destroy'])->name('destroy');
-    Route::post('/store', [CourseControllerAlias::class, 'store'])->name('store');
-    Route::put('/update/{course}', [CourseControllerAlias::class, 'update'])->name('update');
+    Route::get('/{id}', [CourseControllerAlias::class, 'course'])->name('show');
+    Route::delete('/{id}', [CourseControllerAlias::class, 'destroy'])->name('destroy');
+    Route::post('/', [CourseControllerAlias::class, 'store'])->name('store');
+    Route::put('/{id}', [CourseControllerAlias::class, 'update'])->name('update');
 });
 Route::group([
 //    'middleware' => CheckApiAdminMiddleware::class,

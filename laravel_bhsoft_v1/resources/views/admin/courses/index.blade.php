@@ -53,9 +53,8 @@
             let id = e.data("id")
             $.ajax({
                 type:'Delete',
-                url:'{{ route('api.courses.destroy')}}',
+                url:`http://laravel_bhsoft_v1.test/api/courses/${id}`,
                 data:{
-                    id:id,
                     '_token': '{{ csrf_token() }}'
                 },
                 success: function (response) {
@@ -81,7 +80,6 @@
             })
         }
         $(document).ready(function () {
-
             let urlParams = new URLSearchParams(window.location.search)
             $('#ip-search').val(urlParams.get('q') || '')
             $("#ip-field").val(urlParams.get('field') || 'name').change();

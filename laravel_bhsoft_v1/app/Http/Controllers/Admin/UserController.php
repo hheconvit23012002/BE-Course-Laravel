@@ -67,13 +67,12 @@ class UserController extends Controller
         }
     }
 
-    public function user(Request $request)
+    public function user($id)
     {
         try {
-            if (empty($request->user)) {
+            if (empty($id)) {
                 throw new NotFound('User not found');
             }
-            $id = $request->user;
             $user = $this->model
                 ->select([
                     'id',
@@ -123,7 +122,7 @@ class UserController extends Controller
             $arr_update = $request->except('_token', '_method', 'logo_new', 'logo_old', 'course');
             $arr = $request->validated();
             $course_new = $arr['course'];
-            $user = User::query()->firstOrFail($user_id);
+            $user = User::query()->where('id',$user_id)->firstOrFail();
             $user->courses()->sync($course_new);
             if (isset($arr['logo_new'])) {
                 Storage::deleteDirectory("public/$user_id");

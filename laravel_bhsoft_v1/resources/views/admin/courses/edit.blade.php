@@ -49,12 +49,9 @@
             const parts = path.split('/');
             let course = parts[parts.length - 1];
             $.ajax({
-                url: '{{ route("api.courses.show") }}',
+                url: `http://laravel_bhsoft_v1.test/api/courses/${course}`,
                 type: 'GET',
                 dataType: 'json',
-                data: {
-                    course: course
-                },
                 success: function (response) {
                     let course = response.data.course
                     $("#name").val(course.name)
@@ -78,7 +75,7 @@
                 course = parseInt(course)
                 console.log(course)
                 $.ajax({
-                    url: `http://laravel_bhsoft_v1.test/api/courses/update/${course}`,
+                    url: `http://laravel_bhsoft_v1.test/api/courses/${course}`,
                     type: 'PUT',
                     dataType: 'json',
                     data: $(this).serialize(),
