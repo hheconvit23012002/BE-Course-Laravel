@@ -20,10 +20,12 @@ class CheckApiAdminMiddleware
 //        dd(Auth::guard('api')->check());
         if (auth()->check()) {
             if (auth()->user()->role === 1) {
-                return redirect()->route('not_found');
+                return response()->json("loi1");
+//                return redirect()->route('not_found');
             }
         } else {
-            return redirect()->route('not_found');
+            return response()->json("loi2");
+//            return redirect()->route('not_found');
         }
         return $next($request);
     }

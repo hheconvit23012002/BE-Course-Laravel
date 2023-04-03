@@ -39,4 +39,3 @@ Route::group([
 });
 
 Route::get('/test', [TestController::class, 'index']);
-

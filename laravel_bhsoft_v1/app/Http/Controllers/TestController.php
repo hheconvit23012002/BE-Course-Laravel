@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\Notification;
 class TestController extends Controller
 {
     public function index(){
-        if (Auth::guard('web')->check() ) {
-            // Người dùng đã đăng nhập
-            dd(Auth::guard('web'));
-        } else {
-            dd(0);
-            // Người dùng chưa đăng nhập
-        }
+        return view("test");
     }
 }

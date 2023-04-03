@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 //});
 Route::get('/coursesSelect2', [CourseController::class, 'index'])->name('coursesSelect2');
 Route::group([
-//    'middleware' => CheckApiAdminMiddleware::class,
+    'middleware' => ['auth:api',CheckApiAdminMiddleware::class],
     'as' => 'users.',
     'prefix' => 'users'
 ], function () {
@@ -37,7 +37,7 @@ Route::group([
     Route::put('/{id}', [UserController::class, 'update'])->name('update');
 });
 Route::group([
-//    'middleware' => CheckApiAdminMiddleware::class,
+    'middleware' => ['auth:api',CheckApiAdminMiddleware::class],
     'as' => 'courses.',
     'prefix' => 'courses'
 ], function () {
@@ -48,11 +48,23 @@ Route::group([
     Route::put('/{id}', [CourseControllerAlias::class, 'update'])->name('update');
 });
 Route::group([
-//    'middleware' => CheckApiAdminMiddleware::class,
+    'middleware' => ['auth:api',CheckApiAdminMiddleware::class],
     'as' => 'dashboard',
     'prefix' => 'dashboard'
 ], function () {
     Route::get('/', [DashBoardController::class, 'apiDashboard']);
+});
+Route::group([
+    'middleware' => ['auth:api',CheckApiAdminMiddleware::class],
+],function (){
+    Route::post('/import-csv', [CourseControllerAlias::class, 'importCsv'])->name('import_csv');
+    Route::get('/export-csv', [CourseControllerAlias::class, 'exportCsv'])->name('export_csv');
+});
+
+Route::group([],function (){
+    Route::post('/login', [AuthController::class, 'processLogin'])->name('login');
+    Route::get('/user', [UserController::class, 'user'])->name('get_user');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 //
 //Route::group([

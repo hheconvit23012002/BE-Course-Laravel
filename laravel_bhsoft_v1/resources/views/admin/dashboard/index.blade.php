@@ -7,7 +7,6 @@
                     <div class="row">
                         <div class="col-xl-12 col-lg-12" id="dashboard-total">
                         </div> <!-- end col -->
-
                     </div>
                     <div class="row">
                         <div class="table-responsive">

@@ -57,7 +57,7 @@
                         let user = response.data.user
                         let course = response.data.course
                         let profileHtml = `
-                            <img src="${user.logo}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
+                            <img src="{{asset(${user.logo})}}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
                             <h4 class="mb-0 mt-2">
                                 ${user.name}
                             </h4>

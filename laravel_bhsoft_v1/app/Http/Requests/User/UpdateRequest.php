@@ -48,8 +48,8 @@ class UpdateRequest extends FormRequest
             ],
             'logo_new' => [
                 'nullable',
-                'image',
-                'mimes:jpeg,png,jpg,gif,svg',
+//                'image',
+//                'mimes:jpeg,png,jpg,gif,svg',
                 'max:2048',
             ],
             'course' => [

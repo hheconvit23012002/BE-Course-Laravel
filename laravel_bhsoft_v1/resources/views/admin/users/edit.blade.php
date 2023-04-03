@@ -126,8 +126,8 @@
                     contentType: false,
                     processData: false,
                     success: function (response) {
-                        window.location.href = '/admin/users'
-                        localStorage.setItem('success', JSON.stringify("Sửa thành công"))
+                        // window.location.href = '/admin/users'
+                        // localStorage.setItem('success', JSON.stringify("Sửa thành công"))
                     },
                     error: function (response) {
                         $.toast({

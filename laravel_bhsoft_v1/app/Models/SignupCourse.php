@@ -24,4 +24,15 @@ class SignupCourse extends Model
     {
         return $this->belongsTo(User::class, 'user');
     }
+    protected $appends = ['unique_key'];
+
+    public function getUniqueKeyAttribute()
+    {
+        return $this->attributes['user'] . '_' . $this->attributes['course'];
+    }
+
+    public function setUniqueKeyAttribute($value)
+    {
+        // do nothing
+    }
 }

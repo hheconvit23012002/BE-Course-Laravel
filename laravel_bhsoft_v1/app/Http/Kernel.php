@@ -46,6 +46,8 @@ class Kernel extends HttpKernel
 //            \App\Http\Middleware\VerifyCsrfToken::class,
 //            'auth:api',
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+            \App\Http\Middleware\AddCorsHeaders::class,
+
         ],
         'admin' =>[
             \App\Http\Middleware\EncryptCookies::class,

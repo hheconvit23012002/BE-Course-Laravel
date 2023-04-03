@@ -61,7 +61,7 @@ class UserController extends Controller
                 ->appends(['field' => $field]);
             $arr['data'] = $data->getCollection();
             $arr['pagination'] = $data->linkCollection();
-            return $this->successResponse($arr);
+            return $this->successResponse($data);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
@@ -118,13 +118,17 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, $user_id)
     {
+
         try {
             $arr_update = $request->except('_token', '_method', 'logo_new', 'logo_old', 'course');
             $arr = $request->validated();
-            $course_new = $arr['course'];
+            $course_new = [];
+            if(isset($arr['course'])){
+                $course_new = $arr['course'];
+            }
             $user = User::query()->where('id',$user_id)->firstOrFail();
             $user->courses()->sync($course_new);
-            if (isset($arr['logo_new'])) {
+            if (isset($arr['logo_new']) && $arr['logo_new'] != "null") {
                 Storage::deleteDirectory("public/$user_id");
                 $path = Storage::disk('public')->putFile($user_id, $request->file('logo_new'));
                 $arr_update['logo'] = $path;

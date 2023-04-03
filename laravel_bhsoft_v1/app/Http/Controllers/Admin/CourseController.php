@@ -57,9 +57,7 @@ class CourseController extends Controller
             $data = $query->paginate()
                 ->appends(['q' => $q])
                 ->appends(['field' => $field]);
-            $arr['data'] = $data->getCollection();
-            $arr['pagination'] = $data->linkCollection();
-            return $this->successResponse($arr);
+            return $this->successResponse($data);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
@@ -92,7 +90,7 @@ class CourseController extends Controller
         } catch (NotFound $e) {
             return $this->errorResponse("Vui lòng nhập id ", 404);
         } catch (ModelNotFoundException $e) {
-            return $this->errorResponse("Không tồn tại", 404);
+            return $this->errorResponse("Không tồn tạiiiiiii", 404);
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
         }
@@ -169,7 +167,7 @@ class CourseController extends Controller
         }
     }
 
-    public function exportCsv(Request $request)
+    public function exportCsv()
     {
         try {
             return Excel::download(new CoursesExport(), 'course.xlsx');
